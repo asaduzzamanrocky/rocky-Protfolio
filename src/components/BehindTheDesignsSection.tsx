@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, ExternalLink, Sparkles, CheckCircle2, Shield, Layers, X } from 'lucide-react';
 import { ThemeMode } from '../types';
-import { 
-  minimalistJacketImg, 
-  studioHeadphonesImg, 
-  cosmeticBottleImg 
+import {
+  minimalistJacketImg,
+  studioHeadphonesImg,
+  cosmeticBottleImg
 } from '../assets/images';
 import { AnalyticsService } from '../services/analyticsService';
 
@@ -89,12 +89,12 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
 
   return (
     <section id="behind-the-designs" className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
-      
+
       {/* Top Split Section - Exactly as in the Reference Image */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-14 sm:mb-20">
-        
+
         {/* Left Column: Eyebrow + Bold Headline */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
@@ -113,7 +113,7 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
         </motion.div>
 
         {/* Right Column: Lead Copy + Subtext + "Get in touch" Button */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
@@ -155,10 +155,10 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
             initial={{ opacity: 0, y: 45 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{ 
-              duration: 0.8, 
-              delay: index * 0.18, 
-              ease: [0.16, 1, 0.3, 1] 
+            transition={{
+              duration: 0.8,
+              delay: index * 0.18,
+              ease: [0.16, 1, 0.3, 1]
             }}
             whileHover={{ y: -6 }}
             onClick={() => handleOpenShowcase(item)}
@@ -171,7 +171,7 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
                 alt={item.title}
                 className="w-full h-full object-cover object-center filter grayscale contrast-110 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
               />
-              
+
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
 
@@ -248,8 +248,8 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
             {/* Key Metrics */}
             <div className="grid grid-cols-3 gap-3 my-6">
               {activeModalItem.metrics.map((m) => (
-                <div 
-                  key={m.label} 
+                <div
+                  key={m.label}
                   className="p-3 rounded-2xl border text-center bg-white/5 border-white/10"
                 >
                   <div className="text-xs font-mono text-slate-400">{m.label}</div>
@@ -263,7 +263,7 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
               <span className="text-xs font-mono text-slate-400">Architectural Stack:</span>
               <div className="flex flex-wrap gap-2">
                 {activeModalItem.technologies.map((t) => (
-                  <span 
+                  <span
                     key={t}
                     className="px-3 py-1 rounded-full text-xs font-mono bg-[#00b95a]/10 text-[#00b95a] border border-[#00b95a]/20"
                   >
@@ -283,17 +283,6 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
                 <span>Discuss Similar Project</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
-
-              <button
-                onClick={() => setActiveModalItem(null)}
-                className="text-xs text-slate-400 hover:text-white"
-              >
-                Close
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
 
               <button
                 onClick={() => setActiveModalItem(null)}
