@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { useForm, ValidationError } from '@formspree/react';
 import {
   Mail,
   Phone,
@@ -31,9 +32,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
     message: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [formspreeState, formspreeHandleSubmit, resetForm] = useForm('mdeodpqe', {
+    data: {
+      _subject: () => `New Portfolio Lead from ${formData.name} (${formData.service})`,
+    },
+  });
 
   const isLight = theme === 'light-contrast';
 
@@ -49,34 +54,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setSubmitError('');
+    void formspreeHandleSubmit(e);
+  };
 
-    try {
-      const response = await fetch('https://formspree.io/f/mdeodpqe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          service: formData.service,
-          message: formData.message,
-          recipient: PERSONAL_INFO.email,
-          _subject: `New Portfolio Lead from ${formData.name} (${formData.service})`,
-        }),
-      });
-
-      if (!response.ok) {
-        const result = await response.json().catch(() => null);
-        throw new Error(result?.error || 'The inquiry could not be delivered.');
-      }
-
+  useEffect(() => {
+    if (formspreeState.succeeded && !submitted) {
       AnalyticsService.trackEvent('contact_submit', `Lead: ${formData.name}`, {
         service: formData.service,
       });
@@ -89,13 +73,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
       });
 
       setSubmitted(true);
-    } catch (error) {
-      AnalyticsService.trackEvent('contact_submit', `Lead failed: ${formData.name}`);
-      setSubmitError(error instanceof Error ? error.message : 'The inquiry could not be delivered. Please try again.');
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+
+    const formErrors = formspreeState.errors?.getFormErrors();
+    if (formErrors?.length) {
+      AnalyticsService.trackEvent('contact_submit', `Lead failed: ${formData.name}`);
+      setSubmitError(formErrors.map((error) => error.message).join(' '));
+    }
+  }, [formData.name, formData.service, formspreeState.errors, formspreeState.succeeded, submitted]);
 
   return (
     <section id="contact" className="py-20 sm:py-24 relative bg-transparent text-slate-100">
@@ -251,7 +236,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                       <span>Ping on WhatsApp Directly</span>
                     </a>
                     <button
-                      onClick={() => setSubmitted(false)}
+                      onClick={() => {
+                        resetForm();
+                        setSubmitted(false);
+                        setSubmitError('');
+                      }}
                       className="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono"
                     >
                       Send Another Inquiry
@@ -268,6 +257,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -283,6 +273,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -299,6 +290,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                     </label>
                     <select
                       value={formData.service}
+                      name="service"
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                       className="w-full px-4 py-3 rounded-2xl text-xs font-mono border focus:outline-none transition-all bg-[#1e1e1e] border-white/10 text-white focus:border-[#00b95a]/50"
                     >
@@ -317,6 +309,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                     </label>
                     <textarea
                       required
+                      name="message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -328,11 +321,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={formspreeState.submitting}
                     className="w-full py-4 px-6 rounded-full font-display font-semibold text-sm text-white bg-[#00b95a] hover:bg-[#00984a] shadow-lg shadow-[#00b95a]/40 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                     id="submit-contact-form-btn"
                   >
-                    {isSubmitting ? (
+                    {formspreeState.submitting ? (
                       <span>Dispatching Inquiry...</span>
                     ) : (
                       <>
@@ -348,6 +341,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                       <span>{submitError} You can also email {PERSONAL_INFO.email} directly.</span>
                     </div>
                   )}
+
+                  <ValidationError field="email" errors={formspreeState.errors} className="text-xs text-red-200" />
+                  <ValidationError field="message" errors={formspreeState.errors} className="text-xs text-red-200" />
 
                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pt-1">
                     <span className="flex items-center gap-1">
