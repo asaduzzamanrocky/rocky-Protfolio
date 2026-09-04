@@ -1,0 +1,217 @@
+import React, { useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import {
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  ExternalLink,
+  Globe2
+} from 'lucide-react';
+import { ThemeMode } from '../types';
+import { ToolLogosMarquee } from './ToolLogosMarquee';
+import { PERSONAL_INFO } from '../data/portfolioData';
+
+interface HeroSectionProps {
+  theme: ThemeMode;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
+  const isLight = theme === 'light-contrast';
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Smooth scroll transform
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const opacityFade = useTransform(scrollYProgress, [0, 0.9], [1, 0.5]);
+
+  // Ensure autoplay on mount
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Handled silently for browser autoplay compliance
+      });
+    }
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative w-full pt-0 pb-12 overflow-hidden"
+    >
+      {/* Curved Container Card */}
+      <motion.div
+        style={{ y: heroY, opacity: opacityFade }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="relative mx-auto w-full max-w-[1920px] md:aspect-[3/2] lg:aspect-video rounded-b-[40px] md:rounded-b-[64px] overflow-hidden border-b border-x bg-[#252525] border-white/10 text-white"
+      >
+        {/* Futuristic Red Neon Video Background */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <video
+            ref={videoRef}
+            src="/Man_standing_with_red_neon_202609031435.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center opacity-95 min-w-full min-h-full"
+          >
+            <source src="/Man_standing_with_red_neon_202609031435.mp4" type="video/mp4" />
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
+          {/* Subtle Gradient Overlays for Video Clarity and Clean Text Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#252525] via-transparent to-black/40 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#252525]/80 via-transparent to-[#252525]/40 z-10" />
+        </div>
+
+        {/* Content Container - Bottom Aligned so Video is Unobstructed */}
+        <div className="relative z-10 max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 pt-28 sm:pt-40 md:pt-8 lg:pt-52 pb-8 sm:pb-12 md:pb-16 lg:pb-36 min-h-[700px] md:min-h-0 md:h-full flex flex-col justify-end">
+
+          {/* Main Hero Split Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-end w-full">
+
+            {/* Left Column: Compact Bottom-Left Brand Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="md:col-span-7 z-20 space-y-3 bg-black/40 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-white/10 max-w-xl"
+            >
+              <div className="space-y-1">
+                <div className="text-xs sm:text-sm font-semibold text-[#00b95a] tracking-wide font-mono drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                  Hey, I’m Asaduzzaman Rocky —
+                </div>
+                <h1 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                  Business Growth Creator | Brand Builder | Website Developer
+                </h1>
+              </div>
+
+              <h2 className="font-display font-medium text-sm sm:text-base text-slate-200 leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+                Great design should feel invisible.
+              </h2>
+
+              <div className="pt-1 flex flex-wrap items-center gap-2.5">
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white font-medium text-xs transition-all duration-300 shadow-md shadow-[#00b95a]/40 group"
+                  id="hero-start-project-btn"
+                >
+                  <span>Start A Project</span>
+                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+                </a>
+
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 text-xs font-medium transition-all backdrop-blur-md"
+                  id="hero-explore-sites-btn"
+                >
+                  <span>Explore 60+ Sites</span>
+                </a>
+
+                <a
+                  href={PERSONAL_INFO.links.agency}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-mono text-slate-300 hover:text-[#00b95a] transition-colors bg-black/40 rounded-full border border-white/10 backdrop-blur-sm"
+                >
+                  <Globe2 className="w-3.5 h-3.5 text-[#00b95a]" />
+                  <span>Dev Design Grow</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Compact Executive Highlights Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="md:col-span-5 z-20 space-y-3"
+            >
+              {/* Executive Overview Compact Card */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-md shadow-xl space-y-3">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-[#00b95a]/20 border border-[#00b95a]/40 flex items-center justify-center text-[#00b95a]">
+                      <Sparkles className="w-3 h-3" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Leadership</div>
+                      <div className="text-xs font-bold text-white">CEO & Lead Architect</div>
+                    </div>
+                  </div>
+                  <span className="shrink-0 whitespace-nowrap text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-[#00b95a] border border-white/15">
+                    10+ Yrs Track Record
+                  </span>
+                </div>
+
+                {/* 2x2 Compact Metrics */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+                    <div className="counter-pop text-lg font-display font-extrabold text-[#00b95a]">60+</div>
+                    <div className="text-[10px] font-mono text-slate-300">Live Platforms Built</div>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+                    <div className="counter-pop text-lg font-display font-extrabold text-white">10+</div>
+                    <div className="text-[10px] font-mono text-slate-300">Years CMS Mastery</div>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+                    <div className="counter-pop text-lg font-display font-extrabold text-white">99.8%</div>
+                    <div className="text-[10px] font-mono text-slate-300">Client Retention</div>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+                    <div className="counter-pop text-lg font-display font-extrabold text-[#00b95a]">4.2×</div>
+                    <div className="text-[10px] font-mono text-slate-300">Avg Conversion Uplift</div>
+                  </div>
+                </div>
+
+                {/* Core Disciplines List */}
+                <div className="space-y-1.5 pt-1.5 border-t border-white/10 text-[11px] font-mono text-slate-300">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
+                    <span>Bespoke WordPress & WooCommerce</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
+                    <span>Brand Direction & High-Converting Web</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
+                    <span>Full-Stack Security, Headless & Tuning</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
+
+        </div>
+
+        {/* Bottom Scrolling Tools Logos Marquee */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="relative z-10 border-t border-white/10 bg-black/80 backdrop-blur-md px-4 sm:px-8 py-4 overflow-hidden lg:absolute lg:bottom-0 lg:left-0 lg:right-0"
+        >
+          <ToolLogosMarquee />
+        </motion.div>
+
+      </motion.div>
+    </section>
+  );
+};
