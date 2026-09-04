@@ -55,7 +55,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
     setSubmitError('');
 
     try {
-      const response = await fetch('https://formspree.io/f/mqkrvzyv', {
+      const response = await fetch('https://formspree.io/f/mdeodpqe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
