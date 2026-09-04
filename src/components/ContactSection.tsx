@@ -33,6 +33,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const isLight = theme === 'light-contrast';
 
@@ -51,9 +52,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
-      await fetch('https://formspree.io/f/mqkrvzyv', {
+      const response = await fetch('https://formspree.io/f/mqkrvzyv', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,6 +72,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
         }),
       });
 
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || 'The inquiry could not be delivered.');
+      }
+
       AnalyticsService.trackEvent('contact_submit', `Lead: ${formData.name}`, {
         service: formData.service,
       });
@@ -82,10 +89,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
       });
 
       setSubmitted(true);
-    } catch {
-      AnalyticsService.trackEvent('contact_submit', `Lead (Fallback): ${formData.name}`);
-      confetti({ particleCount: 60, spread: 60, origin: { y: 0.6 } });
-      setSubmitted(true);
+    } catch (error) {
+      AnalyticsService.trackEvent('contact_submit', `Lead failed: ${formData.name}`);
+      setSubmitError(error instanceof Error ? error.message : 'The inquiry could not be delivered. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -335,6 +341,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                       </>
                     )}
                   </button>
+
+                  {submitError && (
+                    <div role="alert" className="flex items-start gap-2 rounded-2xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-xs text-red-200">
+                      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                      <span>{submitError} You can also email {PERSONAL_INFO.email} directly.</span>
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pt-1">
                     <span className="flex items-center gap-1">
