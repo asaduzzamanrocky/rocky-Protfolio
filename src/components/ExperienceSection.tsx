@@ -33,7 +33,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ theme }) =
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center text-center space-y-3 mb-12 sm:mb-14"
         >
@@ -55,7 +55,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ theme }) =
               key={exp.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: (index % 2) * 0.15 }}
               className="relative self-start rounded-2xl border p-4 sm:p-5 min-h-[220px] flex flex-col items-center text-center transition-all duration-300 group bg-[#1e1e1e] border-white/10 hover:border-[#00b95a]/40 hover:shadow-xl hover:shadow-[#00b95a]/10"
             >

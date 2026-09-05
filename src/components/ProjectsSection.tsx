@@ -84,7 +84,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8"
         >
@@ -134,7 +134,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6"
         >
@@ -172,7 +172,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                   key={project.id}
                   initial={{ opacity: 0, y: 35 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.2 }}
+                  viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   className={`relative rounded-3xl border p-6 sm:p-10 transition-all duration-500 group overflow-hidden ${isLight
                     ? 'bg-slate-50 border-slate-200 hover:border-slate-300 shadow-sm'

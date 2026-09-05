@@ -13,14 +13,12 @@ import { ExperienceSection } from './components/ExperienceSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
-import { LoadingScreen } from './components/LoadingScreen';
 import { DatalinesWithGrid } from './components/neonblade-ui/datalines-with-grid';
 import { ScrollProgressIndicator } from './components/ScrollProgressIndicator';
 import { ThemeMode } from './types';
 import { AnalyticsService } from './services/analyticsService';
 
 function AppInner() {
-  const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState<ThemeMode>('dark-crimson');
   const [activeSection, setActiveSection] = useState('hero');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,14 +37,6 @@ function AppInner() {
   const ambientGlowOpacity = useTransform(smoothProgress, [0, 1], [0.15, 0.9]);
 
   useEffect(() => {
-    const loadingTimer = window.setTimeout(() => setIsLoading(false), 900);
-
-    return () => window.clearTimeout(loadingTimer);
-  }, []);
-
-  useEffect(() => {
-    if (isLoading) return;
-
     // Initialize analytics telemetry
     AnalyticsService.initialize();
     AnalyticsService.trackEvent('page_view', 'Home Page View');
@@ -66,10 +56,12 @@ function AppInner() {
       let ringX = mouseX;
       let ringY = mouseY;
       let animationFrameId = 0;
+      let cursorNeedsUpdate = true;
 
       const handlePointerMove = (event: PointerEvent) => {
         mouseX = event.clientX;
         mouseY = event.clientY;
+        cursorNeedsUpdate = true;
       };
 
       const handlePointerDown = () => {
@@ -81,13 +73,19 @@ function AppInner() {
       };
 
       const animateCursor = () => {
+        if (!cursorNeedsUpdate) {
+          animationFrameId = 0;
+          return;
+        }
+
         ringX += (mouseX - ringX) * 0.18;
         ringY += (mouseY - ringY) * 0.18;
 
         cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
         cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
 
-        animationFrameId = requestAnimationFrame(animateCursor);
+        cursorNeedsUpdate = Math.abs(mouseX - ringX) > 0.5 || Math.abs(mouseY - ringY) > 0.5;
+        animationFrameId = cursorNeedsUpdate ? requestAnimationFrame(animateCursor) : 0;
       };
 
       window.addEventListener('pointermove', handlePointerMove);
@@ -142,35 +140,26 @@ function AppInner() {
     });
 
     return () => observer.disconnect();
-  }, [isLoading]);
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  }, []);
 
   return (
     <div
       ref={containerRef}
       className="min-h-screen bg-[#252525] text-slate-100 transition-colors duration-300 relative overflow-x-hidden"
     >
-      {/* Top Parallax Scroll Progress Bar */}
-      <motion.div
-        style={{ scaleX: smoothProgress }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#00b95a] via-emerald-400 to-[#00b95a] origin-left z-50 shadow-[0_0_12px_#00b95a]"
-      />
       <motion.div
         style={{ opacity: ambientGlowOpacity }}
-        className="fixed top-0 left-0 w-full h-24 bg-gradient-to-r from-transparent via-[#00b95a]/25 to-transparent blur-2xl pointer-events-none z-40"
+        className="performance-glow fixed top-0 left-0 w-full h-24 bg-gradient-to-r from-transparent via-[#00b95a]/25 to-transparent blur-2xl pointer-events-none z-40"
       />
 
       {/* Floating Parallax Ambient Orbs */}
       <motion.div
         style={{ y: ambientOrb1Y }}
-        className="fixed top-1/4 -right-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
+        className="performance-glow fixed top-1/4 -right-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
       />
       <motion.div
         style={{ y: ambientOrb2Y }}
-        className="fixed top-2/3 -left-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
+        className="performance-glow fixed top-2/3 -left-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
       />
 
       {/* Sticky Header with Personal Branding */}

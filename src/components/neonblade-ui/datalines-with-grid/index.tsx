@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export interface DatalinesWithGridProps {
   lineColor?: string;
@@ -41,6 +41,9 @@ const DatalinesCanvas: React.FC<Omit<DatalinesWithGridProps, 'bgGridColor' | 'ov
     if (!canvas || !context) return;
 
     let animationFrameId = 0;
+    let isVisible = true;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     let width = 0;
     let height = 0;
     const lines: Array<{
@@ -66,6 +69,7 @@ const DatalinesCanvas: React.FC<Omit<DatalinesWithGridProps, 'bgGridColor' | 'ov
     resizeObserver.observe(canvas);
 
     const draw = () => {
+      if (prefersReducedMotion || isTouchDevice || !isVisible) return;
       context.clearRect(0, 0, width, height);
 
       if (Math.random() < spawnProbability && lines.length < maxLines) {
@@ -139,10 +143,21 @@ const DatalinesCanvas: React.FC<Omit<DatalinesWithGridProps, 'bgGridColor' | 'ov
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    animationFrameId = requestAnimationFrame(draw);
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !prefersReducedMotion && !isTouchDevice) {
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    }, { rootMargin: '200px' });
+    visibilityObserver.observe(canvas);
+
+    if (!prefersReducedMotion && !isTouchDevice) {
+      animationFrameId = requestAnimationFrame(draw);
+    }
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
     };
   }, [baseSpeed, cellSize, lineColor, lineLength, maxLines, shadowColor, spawnProbability]);
 
@@ -161,24 +176,15 @@ export const DatalinesWithGrid: React.FC<DatalinesWithGridProps> = ({
   overlay = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [tileCount, setTileCount] = useState(0);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const updateTiles = () => {
-      setTileCount(Math.ceil(container.clientWidth / cellSize) * (Math.ceil(container.clientHeight / cellSize) + 1));
-    };
-
-    updateTiles();
-    const resizeObserver = new ResizeObserver(updateTiles);
-    resizeObserver.observe(container);
-    return () => resizeObserver.disconnect();
-  }, [cellSize]);
-
   return (
-    <div ref={containerRef} className="absolute inset-0 z-0 flex flex-wrap overflow-hidden">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-0 overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(to right, ${bgGridColor} 1px, transparent 1px), linear-gradient(to bottom, ${bgGridColor} 1px, transparent 1px)`,
+        backgroundSize: `${cellSize}px ${cellSize}px`,
+      }}
+    >
       <DatalinesCanvas
         lineColor={lineColor}
         shadowColor={shadowColor}
@@ -188,9 +194,6 @@ export const DatalinesWithGrid: React.FC<DatalinesWithGridProps> = ({
         lineLength={lineLength}
         spawnProbability={spawnProbability}
       />
-      {Array.from({ length: tileCount }).map((_, index) => (
-        <div key={index} className="box-border" style={{ width: cellSize, height: cellSize, border: `0.5px solid ${bgGridColor}` }} />
-      ))}
       {overlay && <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-b from-black/30 via-transparent to-[#252525]/70" />}
     </div>
   );

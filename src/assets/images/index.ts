@@ -2,9 +2,11 @@ import creativeDirectorSilhouetteImg from './creative_director_silhouette_178846
 import minimalistJacketImg from './minimalist_jacket_hanger_1788463556874.jpg';
 import studioHeadphonesImg from './studio_headphones_profile_1788463572206.jpg';
 import cosmeticBottleImg from './cosmetic_bottle_stone_1788463586849.jpg';
+import heroVideoPosterImg from './rocky_hero_neon_video_poster_1788464364457.jpg';
 export {
   creativeDirectorSilhouetteImg,
   minimalistJacketImg,
   studioHeadphonesImg,
   cosmeticBottleImg,
+  heroVideoPosterImg,
 };

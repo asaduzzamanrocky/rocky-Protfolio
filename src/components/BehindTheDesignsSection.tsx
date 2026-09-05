@@ -215,12 +215,12 @@ export const BehindTheDesignsSection: React.FC<BehindTheDesignsSectionProps> = (
 
       {/* Showcase Detail Modal */}
       {activeModalItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 bg-black/80 backdrop-blur-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-2xl rounded-3xl overflow-hidden border p-6 sm:p-8 shadow-2xl bg-[#1e1e1e] border-[#00b95a]/40 text-white"
+            className="relative my-4 w-full max-h-[calc(100svh-2rem)] max-w-2xl overflow-y-auto rounded-3xl border p-6 sm:p-8 shadow-2xl bg-[#1e1e1e] border-[#00b95a]/40 text-white"
           >
             {/* Close Button */}
             <button

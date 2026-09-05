@@ -54,7 +54,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center text-center space-y-3 mb-12 sm:mb-14"
         >
@@ -78,7 +78,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-5"
           >
@@ -151,11 +151,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
                 href="https://wa.me/8801714722651?text=Hello%20Rocky,%20let%20us%20discuss%20a%20project."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-full bg-white/5 hover:bg-[#00b95a]/20 text-slate-200 hover:text-white border border-white/10 hover:border-[#00b95a]/40 font-mono text-xs flex items-center justify-between transition-all"
+                className="w-full min-w-0 py-3 px-4 rounded-full bg-white/5 hover:bg-[#00b95a]/20 text-slate-200 hover:text-white border border-white/10 hover:border-[#00b95a]/40 font-mono text-xs flex items-center justify-between gap-2 transition-all"
               >
                 <span className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5 text-[#00b95a]" />
-                  <span>WhatsApp: +880 1714-722651</span>
+                  <span className="min-w-0 break-words">WhatsApp: +880 1714-722651</span>
                 </span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
               </a>
@@ -167,7 +167,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:col-span-7 space-y-6"
           >
@@ -198,7 +198,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
                       key={p.title}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: false, amount: 0.2 }}
+                      viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.5, delay: 0.1 * idx }}
                       className="relative z-10 p-4 sm:p-5 rounded-2xl border transition-all bg-[#1e1e1e]/95 border-white/10 hover:border-[#00b95a]/30"
                     >

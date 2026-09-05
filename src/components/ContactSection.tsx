@@ -90,7 +90,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center text-center space-y-3 mb-12 sm:mb-14"
         >
@@ -114,7 +114,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             className="lg:col-span-5 space-y-6"
           >
@@ -128,14 +128,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
               <div className="space-y-3.5 text-sm font-mono">
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white transition-all border border-white/5 group"
+                  className="flex min-w-0 items-center gap-3 p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white transition-all border border-white/5 group"
                 >
                   <div className="p-2.5 rounded-xl bg-[#00b95a]/10 text-[#00b95a] group-hover:scale-110 transition-transform">
                     <Mail className="w-4 h-4" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-[10px] text-slate-400">Primary Email</div>
-                    <div className="text-xs font-semibold">{PERSONAL_INFO.email}</div>
+                    <div className="break-all text-xs font-semibold">{PERSONAL_INFO.email}</div>
                   </div>
                 </a>
 
@@ -144,12 +144,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => AnalyticsService.trackEvent('whatsapp_click', 'Contact Section WhatsApp')}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-[#00b95a]/10 hover:bg-[#00b95a]/20 text-[#00b95a] transition-all border border-[#00b95a]/30 group"
+                  className="flex min-w-0 items-center gap-3 p-3.5 rounded-2xl bg-[#00b95a]/10 hover:bg-[#00b95a]/20 text-[#00b95a] transition-all border border-[#00b95a]/30 group"
                 >
                   <div className="p-2.5 rounded-xl bg-[#00b95a]/20 text-[#00b95a] group-hover:scale-110 transition-transform">
                     <Phone className="w-4 h-4" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-[10px] text-[#00b95a]/80">WhatsApp / Direct Line</div>
                     <div className="text-xs font-semibold">{PERSONAL_INFO.phone}</div>
                   </div>
@@ -206,7 +206,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:col-span-7"
           >
