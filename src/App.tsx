@@ -62,6 +62,12 @@ function AppInner() {
         mouseX = event.clientX;
         mouseY = event.clientY;
         cursorNeedsUpdate = true;
+
+        // The animation loop stops after the ring catches up. Restart it for
+        // every new movement so subsequent pointer events are rendered too.
+        if (!animationFrameId) {
+          animationFrameId = requestAnimationFrame(animateCursor);
+        }
       };
 
       const handlePointerDown = () => {
@@ -81,8 +87,8 @@ function AppInner() {
         ringX += (mouseX - ringX) * 0.18;
         ringY += (mouseY - ringY) * 0.18;
 
-        cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-        cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
+        cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
 
         cursorNeedsUpdate = Math.abs(mouseX - ringX) > 0.5 || Math.abs(mouseY - ringY) > 0.5;
         animationFrameId = cursorNeedsUpdate ? requestAnimationFrame(animateCursor) : 0;
@@ -225,4 +231,3 @@ function AppInner() {
 export default function App() {
   return <AppInner />;
 }
-

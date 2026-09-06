@@ -70,6 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
       >
         {/* Futuristic Red Neon Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="hero-mobile-atmosphere" aria-hidden="true" />
           {shouldPlayVideo && (
             <video
               ref={videoRef}
