@@ -90,16 +90,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
         >
           <div className="space-y-3">
             <span className="font-mono text-xs font-bold text-[#00b95a] tracking-widest uppercase block">
-              Production Ecosystem // 60+ Live Platforms
+              Selected Work // Case Studies
             </span>
             <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-              Featured Client Deployments &{' '}
+              Websites Built, Fixed &{' '}
               <span className="text-[#00b95a]">
                 Case Studies
               </span>
             </h2>
             <p className="text-sm sm:text-base text-slate-400 max-w-2xl">
-              Engineered for peak performance, sub-2s mobile loading, and measurable conversion gains across global markets.
+              Each case study shows the project context, the work completed, and the technology used—using the details available for that project.
             </p>
           </div>
 
@@ -305,9 +305,11 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                         <span className="truncate">{project.domain}</span>
                       </div>
 
-                      <p className="text-xs text-slate-400 leading-relaxed line-clamp-2 mb-3">
-                        {project.description}
-                      </p>
+                      <dl className="grid grid-cols-2 gap-x-3 gap-y-2 mb-3 text-[10px] leading-relaxed">
+                        <div><dt className="font-mono uppercase text-slate-500">Industry</dt><dd className="text-slate-300 capitalize">{project.category}</dd></div>
+                        <div><dt className="font-mono uppercase text-slate-500">My Role</dt><dd className="text-slate-300">Website Designer & Developer</dd></div>
+                        <div className="col-span-2"><dt className="font-mono uppercase text-slate-500">Problem</dt><dd className="text-slate-400 line-clamp-2">{project.description}</dd></div>
+                      </dl>
 
                       <div className="flex flex-wrap gap-1 mb-4">
                         {project.technologies.slice(0, 3).map((tech) => (
@@ -453,10 +455,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                 </div>
 
                 <div className="space-y-3 text-sm text-slate-300 leading-relaxed">
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Architecture & Strategic Execution
-                  </h4>
-                  <p>{activeModalProject.longDescription || activeModalProject.description}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Project</span><p className="mt-1 text-white">{activeModalProject.title}</p></div>
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Industry</span><p className="mt-1 text-white capitalize">{activeModalProject.category}</p></div>
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">My Role</span><p className="mt-1 text-white">Website Designer & Developer</p></div>
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Technology</span><p className="mt-1 text-white">{activeModalProject.technologies.join(', ')}</p></div>
+                  </div>
+                  <div><h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">Problem</h4><p className="mt-1">{activeModalProject.description}</p></div>
+                  <div><h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">What I Did → Solution</h4><p className="mt-1">{activeModalProject.longDescription || activeModalProject.description}</p></div>
                 </div>
 
                 {/* Key Features List */}

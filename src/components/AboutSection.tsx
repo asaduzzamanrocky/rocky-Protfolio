@@ -59,16 +59,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
           className="flex flex-col items-center text-center space-y-3 mb-12 sm:mb-14"
         >
           <span className="font-mono text-xs font-bold text-[#00b95a] tracking-widest uppercase">
-            Executive Profile & Methodology
+            About
           </span>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight max-w-3xl">
-            Fusing Technical Architecture With{' '}
+            A designer and developer who understands the{' '}
             <span className="text-[#00b95a]">
-              Business Growth
+              business problem
             </span>
           </h2>
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl">
-            Over 10 years converting complex operational requirements into high-converting, resilient digital platforms.
+            I turn website problems into practical, useful digital solutions—from the first design decision to launch and improvement.
           </p>
         </motion.div>
 
@@ -173,15 +173,15 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
           >
             <div className="space-y-4 text-slate-300 leading-relaxed text-base">
               <p className="font-display font-semibold text-xl sm:text-2xl text-white leading-snug">
-                "I don’t just build websites that look good. I engineer user-friendly, high-speed, and conversion-focused systems designed to build trust, attract customers, and scale revenue."
+                "I design the solution, build it, and improve what is already there—so your website works better for your business and the people using it."
               </p>
 
               <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-                Having architected <strong className="text-white">60+ live WordPress sites</strong> across healthcare, corporate, e-commerce, and SaaS verticals, I transform ambitious business goals into durable digital assets.
+                I work across healthcare, corporate, e-commerce, and UI/UX projects, using the right platform and approach for the job—not a one-size-fits-all build.
               </p>
 
               <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-                As the CEO & Lead WordPress Architect at <strong className="text-white">Dev Design Grow</strong> and Digital Growth Strategist at <strong className="text-white">Najah Brand Elevation (Minnesota, US)</strong>, I guide projects from heuristic wireframing to enterprise cloud deployments with sub-second performance.
+                From discovery and interface design to development, repairs, and optimization, I bring design and technical thinking together in one clear process.
               </p>
             </div>
 

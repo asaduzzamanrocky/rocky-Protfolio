@@ -38,9 +38,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navLinks = [
     { name: 'Home', href: '#hero' },
+    { name: 'Work', href: '#projects' },
+    { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
-    { name: 'Works & 60+ Sites', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -100,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2 rounded-full bg-[#00b95a] px-3.5 py-2 text-[11px] sm:text-xs font-semibold text-white shadow-[0_8px_22px_rgba(0,185,90,0.28)] hover:bg-[#00984a] transition-all"
               id="nav-get-in-touch-btn"
             >
-              <span>Get in touch</span>
+              <span>Start a Project</span>
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[#00b95a] text-[11px] font-bold">
                 →
               </span>

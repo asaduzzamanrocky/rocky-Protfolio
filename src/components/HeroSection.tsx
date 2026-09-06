@@ -20,6 +20,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
   const isLight = theme === 'light-contrast';
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const [shouldPlayVideo] = useState(() => {
     if (typeof window === 'undefined') return false;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
@@ -81,7 +82,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
               muted
               playsInline
               preload="metadata"
-              className="w-full h-full object-cover object-center opacity-95"
+              onCanPlay={() => setIsVideoReady(true)}
+              className={`w-full h-full object-cover object-center transition-opacity duration-500 ${isVideoReady ? 'opacity-95' : 'opacity-0'}`}
             />
           )}
           {/* Subtle Gradient Overlays for Video Clarity and Clean Text Contrast */}
@@ -105,44 +107,41 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
             >
               <div className="space-y-1">
                 <div className="text-xs sm:text-sm font-semibold text-[#00b95a] tracking-wide font-mono drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-                  Hey, I’m Asaduzzaman Rocky —
+                  Website Designer & Developer
                 </div>
                 <h1 className="font-display font-extrabold text-[clamp(1.5rem,7vw,2.25rem)] sm:text-3xl lg:text-4xl tracking-tight leading-tight text-white break-words text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
-                  Business Growth Creator | Brand Builder | Website Developer
+                  I Build, Fix & Improve Websites.
                 </h1>
               </div>
 
               <h2 className="font-display font-medium text-sm sm:text-base text-slate-200 leading-snug drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-                Great design should feel invisible.
+                I design, develop, redesign and fix websites that look better, work better and help businesses grow.
               </h2>
 
               <div className="pt-1 flex flex-wrap items-center gap-2.5">
                 <a
-                  href="#contact"
+                  href="#projects"
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white font-medium text-xs transition-all duration-300 shadow-md shadow-[#00b95a]/40 group"
                   id="hero-start-project-btn"
                 >
-                  <span>Start A Project</span>
+                  <span>View My Work</span>
                   <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                 </a>
 
                 <a
-                  href="#projects"
+                  href="#contact"
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 text-xs font-medium transition-all backdrop-blur-md"
                   id="hero-explore-sites-btn"
                 >
-                  <span>Explore 60+ Sites</span>
+                  <span>Start a Project</span>
                 </a>
 
                 <a
-                  href={PERSONAL_INFO.links.agency}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#contact"
                   className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-mono text-slate-300 hover:text-[#00b95a] transition-colors bg-black/40 rounded-full border border-white/10 backdrop-blur-sm"
                 >
                   <Globe2 className="w-3.5 h-3.5 text-[#00b95a]" />
-                  <span>Dev Design Grow</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <span>Need help with an existing website? → Fix My Website</span>
                 </a>
               </div>
             </motion.div>
@@ -163,35 +162,35 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
                       <Sparkles className="w-3 h-3" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Leadership</div>
-                      <div className="text-xs font-bold text-white">CEO & Lead Architect</div>
+                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">How I can help</div>
+                      <div className="text-xs font-bold text-white">Design + development, focused on the real problem</div>
                     </div>
                   </div>
                   <span className="max-w-full text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-[#00b95a] border border-white/15">
-                    10+ Yrs Track Record
+                    Design • Build • Fix
                   </span>
                 </div>
 
                 {/* 2x2 Compact Metrics */}
                 <div className="grid grid-cols-2 gap-2">
                   <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
-                    <div className="counter-pop text-lg font-display font-extrabold text-[#00b95a]">60+</div>
-                    <div className="text-[10px] font-mono text-slate-300">Live Platforms Built</div>
+                    <div className="text-sm font-display font-bold text-[#00b95a]">UI/UX Design</div>
+                    <div className="text-[10px] font-mono text-slate-300">Clear interfaces for real users</div>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
-                    <div className="counter-pop text-lg font-display font-extrabold text-white">10+</div>
-                    <div className="text-[10px] font-mono text-slate-300">Years CMS Mastery</div>
+                    <div className="text-sm font-display font-bold text-white">Web Development</div>
+                    <div className="text-[10px] font-mono text-slate-300">Responsive websites and features</div>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
-                    <div className="counter-pop text-lg font-display font-extrabold text-white">99.8%</div>
-                    <div className="text-[10px] font-mono text-slate-300">Client Retention</div>
+                    <div className="text-sm font-display font-bold text-white">Redesign & Repair</div>
+                    <div className="text-[10px] font-mono text-slate-300">Better structure and working flows</div>
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
-                    <div className="counter-pop text-lg font-display font-extrabold text-[#00b95a]">4.2×</div>
-                    <div className="text-[10px] font-mono text-slate-300">Avg Conversion Uplift</div>
+                    <div className="text-sm font-display font-bold text-[#00b95a]">Optimization</div>
+                    <div className="text-[10px] font-mono text-slate-300">Performance, usability and SEO</div>
                   </div>
                 </div>
 
@@ -199,15 +198,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
                 <div className="space-y-1.5 pt-1.5 border-t border-white/10 text-[11px] font-mono text-slate-300">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
-                    <span className="min-w-0 break-words">Bespoke WordPress & WooCommerce</span>
+                    <span className="min-w-0 break-words">WordPress is one platform I work with—not the whole offering.</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
-                    <span className="min-w-0 break-words">Brand Direction & High-Converting Web</span>
+                    <span className="min-w-0 break-words">Start with your business need, then choose the right solution.</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3 h-3 text-[#00b95a] shrink-0" />
-                    <span className="min-w-0 break-words">Full-Stack Security, Headless & Tuning</span>
+                    <span className="min-w-0 break-words">New site, overdue redesign, focused repair or ongoing improvement.</span>
                   </div>
                 </div>
               </div>

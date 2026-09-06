@@ -28,7 +28,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
     name: '',
     email: '',
     phone: '',
-    service: 'WordPress Architecture & Custom Dev',
+    service: 'Build a Website',
     message: '',
   });
 
@@ -43,13 +43,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
   const isLight = theme === 'light-contrast';
 
   const services = [
-    'WordPress Architecture & Custom Dev',
-    'Elementor Pro & Advanced Layouts',
-    'WooCommerce & High-Volume E-Commerce',
-    'Healthcare & Clinic Web Platforms',
-    'UI/UX Design Systems (Figma)',
-    'Speed & Core Web Vitals Optimization',
-    'Lead Generation & Growth Strategy',
+    'Build a Website',
+    'Fix a Website',
+    'Redesign a Website',
+    'Improve a Website',
+    'Custom Web Development',
   ];
 
 
@@ -98,13 +96,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
             Initiate Engagement // Direct Inquiries
           </span>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-            Ready to Engineer Your Next{' '}
+            Have a Website{' '}
             <span className="text-[#00b95a]">
-              Digital Breakthrough?
+              Problem?
             </span>
           </h2>
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl">
-            Whether you need a full WordPress ecosystem rebuild, speed hardening, or an enterprise e-commerce portal, let's connect.
+            Whether you need a new website, a redesign, a fix, or an improvement, let’s find the right solution.
           </p>
         </motion.div>
 
@@ -330,7 +328,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Send Project Inquiry</span>
+                        <span>Start a Project</span>
                       </>
                     )}
                   </button>

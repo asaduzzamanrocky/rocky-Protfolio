@@ -15,6 +15,8 @@ import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
 import { DatalinesWithGrid } from './components/neonblade-ui/datalines-with-grid';
 import { ScrollProgressIndicator } from './components/ScrollProgressIndicator';
+import { ServicesSection } from './components/ServicesSection';
+import { LoadingScreen } from './components/LoadingScreen';
 import { ThemeMode } from './types';
 import { AnalyticsService } from './services/analyticsService';
 
@@ -110,7 +112,7 @@ function AppInner() {
         { threshold: 0.25 }
       );
 
-      const sectionIds = ['hero', 'about', 'projects', 'experience', 'contact'];
+      const sectionIds = ['hero', 'services', 'projects', 'about', 'contact'];
       sectionIds.forEach((id) => {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
@@ -139,7 +141,7 @@ function AppInner() {
       { threshold: 0.25 }
     );
 
-    const sectionIds = ['hero', 'about', 'projects', 'experience', 'contact'];
+    const sectionIds = ['hero', 'services', 'projects', 'about', 'contact'];
     sectionIds.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -180,6 +182,8 @@ function AppInner() {
         <HeroSection
           theme={theme}
         />
+
+        <ServicesSection theme={theme} />
 
         <div className="site-grid-wrapper">
           <div className="pointer-events-none absolute inset-0 z-0 opacity-90" aria-hidden="true">
@@ -229,5 +233,12 @@ function AppInner() {
 }
 
 export default function App() {
-  return <AppInner />;
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsLoading(false), 500);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  return isLoading ? <LoadingScreen /> : <AppInner />;
 }

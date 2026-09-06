@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ theme }) => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
-              CEO & Lead WordPress Architect at Dev Design Grow. Architecting resilient digital ecosystems, e-commerce engines, and high-converting UX for global enterprises.
+              Website Designer & Developer. I build new websites, fix broken ones, redesign outdated experiences, and improve what is already there.
             </p>
           </div>
 
