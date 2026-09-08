@@ -72,6 +72,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
         {/* Futuristic Red Neon Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <div className="hero-mobile-atmosphere" aria-hidden="true" />
+          {/* Keep a static poster visible while the video is downloading so
+              the hero never flashes or briefly shows an empty background. */}
+          <img
+            src={heroVideoPosterImg}
+            alt=""
+            aria-hidden="true"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${isVideoReady ? 'opacity-0' : 'opacity-95'}`}
+          />
           {shouldPlayVideo && (
             <video
               ref={videoRef}
@@ -81,7 +89,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
               loop
               muted
               playsInline
-              preload="metadata"
+              preload="auto"
               onCanPlay={() => setIsVideoReady(true)}
               className={`w-full h-full object-cover object-center transition-opacity duration-500 ${isVideoReady ? 'opacity-95' : 'opacity-0'}`}
             />

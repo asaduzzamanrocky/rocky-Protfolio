@@ -65,6 +65,12 @@ function AppInner() {
         mouseY = event.clientY;
         cursorNeedsUpdate = true;
 
+        const target = event.target;
+        const isInteractive = target instanceof Element && Boolean(
+          target.closest('a, button, input, textarea, select, label, [role="button"], [data-cursor-hover]')
+        );
+        cursorRing.classList.toggle('cursor-hover', isInteractive);
+
         // The animation loop stops after the ring catches up. Restart it for
         // every new movement so subsequent pointer events are rendered too.
         if (!animationFrameId) {
@@ -236,8 +242,29 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 500);
-    return () => window.clearTimeout(timer);
+    // Keep the branded loader visible long enough to avoid a flash while the
+    // hero poster and fonts are being prepared, without trapping visitors on
+    // a slow connection.
+    const startedAt = Date.now();
+    const minimumDuration = 1100;
+    const maximumDuration = 3500;
+    let completed = false;
+
+    const finishLoading = () => {
+      if (completed) return;
+      completed = true;
+      const remaining = Math.max(0, minimumDuration - (Date.now() - startedAt));
+      window.setTimeout(() => setIsLoading(false), remaining);
+    };
+
+    window.addEventListener('load', finishLoading, { once: true });
+    const fallbackTimer = window.setTimeout(finishLoading, maximumDuration);
+    if (document.readyState === 'complete') finishLoading();
+
+    return () => {
+      window.removeEventListener('load', finishLoading);
+      window.clearTimeout(fallbackTimer);
+    };
   }, []);
 
   return isLoading ? <LoadingScreen /> : <AppInner />;
