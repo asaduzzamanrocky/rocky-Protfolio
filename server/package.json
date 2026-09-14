@@ -6,16 +6,21 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "postinstall": "prisma skills sync || exit 0",
+    "contract:emit": "prisma contract emit"
   },
   "dependencies": {
     "@prisma/client": "^7.10.0",
-    "express": "^5.1.0",
-    "prisma": "^8.0.0-rc.13"
+    "@prisma/orm-postgres": "^8.0.0-rc.8",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0"
   },
   "devDependencies": {
+    "@prisma/cli-engine": "^0.2.3",
     "@types/express": "^5.0.3",
     "@types/node": "^24.10.1",
+    "prisma": "^8.0.0-rc.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

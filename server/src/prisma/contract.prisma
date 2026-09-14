@@ -1,0 +1,5 @@
+model Test {
+  id        Int    @id @default(autoincrement())
+  message   String
+  createdAt String @default(now())
+}
