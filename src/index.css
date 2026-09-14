@@ -91,48 +91,7 @@ button:not([class*="absolute"]):not([class*="fixed"])>*:not([class*="absolute"])
   z-index: 1;
 }
 
-.custom-cursor-dot,
-.custom-cursor-ring {
-  position: fixed;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-}
 
-.custom-cursor-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 14px rgba(0, 185, 90, 0.8);
-}
-
-.custom-cursor-ring {
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(0, 185, 90, 0.9);
-  border-radius: 9999px;
-  background: rgba(0, 185, 90, 0.08);
-  box-shadow: 0 0 18px rgba(0, 185, 90, 0.3);
-  transition: width 0.18s ease, height 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-}
-
-.custom-cursor-ring.cursor-active {
-  width: 42px;
-  height: 42px;
-  border-color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.custom-cursor-ring.cursor-hover {
-  width: 46px;
-  height: 46px;
-  border-color: rgba(255, 255, 255, 0.95);
-  background: rgba(0, 185, 90, 0.18);
-  box-shadow: 0 0 26px rgba(0, 185, 90, 0.55);
-}
 
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html,
