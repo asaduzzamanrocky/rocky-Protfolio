@@ -16,11 +16,10 @@ import { FloatingActions } from './components/FloatingActions';
 import { DatalinesWithGrid } from './components/neonblade-ui/datalines-with-grid';
 import { ScrollProgressIndicator } from './components/ScrollProgressIndicator';
 import { ServicesSection } from './components/ServicesSection';
-import { LoadingScreen } from './components/LoadingScreen';
 import { ThemeMode } from './types';
 import { AnalyticsService } from './services/analyticsService';
 
-function AppInner() {
+export default function App() {
   const [theme, setTheme] = useState<ThemeMode>('dark-crimson');
   const [activeSection, setActiveSection] = useState('hero');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -144,36 +143,4 @@ function AppInner() {
       <ScrollProgressIndicator theme={theme} activeSection={activeSection} />
     </div>
   );
-}
-
-export default function App() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    // Keep the branded loader visible long enough to avoid a flash while the
-    // hero poster and fonts are being prepared, without trapping visitors on
-    // a slow connection.
-    const startedAt = Date.now();
-    const minimumDuration = 300;
-    const maximumDuration = 2000;
-    let completed = false;
-
-    const finishLoading = () => {
-      if (completed) return;
-      completed = true;
-      const remaining = Math.max(0, minimumDuration - (Date.now() - startedAt));
-      window.setTimeout(() => setIsLoading(false), remaining);
-    };
-
-    window.addEventListener('load', finishLoading, { once: true });
-    const fallbackTimer = window.setTimeout(finishLoading, maximumDuration);
-    if (document.readyState === 'complete') finishLoading();
-
-    return () => {
-      window.removeEventListener('load', finishLoading);
-      window.clearTimeout(fallbackTimer);
-    };
-  }, []);
-
-  return isLoading ? <LoadingScreen /> : <AppInner />;
 }
