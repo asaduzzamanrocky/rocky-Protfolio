@@ -30,6 +30,10 @@ export const Footer: React.FC<FooterProps> = ({ theme }) => {
               <img
                 src="/favicon.png"
                 alt="Asaduzzaman Rocky logo"
+                width="36"
+                height="36"
+                loading="lazy"
+                decoding="async"
                 className="h-9 w-9 rounded-full object-contain ring-1 ring-white/10 shadow-[0_0_12px_rgba(0,185,90,0.08)] bg-transparent"
               />
               <span className="font-display font-extrabold text-lg text-white">
@@ -106,7 +110,7 @@ export const Footer: React.FC<FooterProps> = ({ theme }) => {
         </div>
 
         {/* Bottom copyright */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-300">
           <div>
             © {new Date().getFullYear()} Asaduzzaman Rocky. All Rights Reserved.
           </div>

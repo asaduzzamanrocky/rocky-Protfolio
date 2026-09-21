@@ -73,6 +73,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <img
               src="/favicon.png"
               alt="Asaduzzaman Rocky logo"
+              width="40"
+              height="40"
+              fetchPriority="high"
+              decoding="async"
               className="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-contain ring-1 ring-white/10 shadow-[0_0_12px_rgba(0,185,90,0.08)] group-hover:scale-[1.03] transition-transform bg-transparent"
             />
           </a>

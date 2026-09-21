@@ -89,6 +89,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme }) => {
                 <img
                   src="/rocky-portrait.jpg"
                   alt="Asaduzzaman Rocky - Creative Director & Lead Architect"
+                  width="400"
+                  height="288"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-72 sm:h-84 object-cover object-top transform group-hover:scale-105 transition-transform duration-700"
                 />
                 {/* Dark & Ambient Gradient Overlay */}

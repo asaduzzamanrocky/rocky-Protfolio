@@ -129,6 +129,7 @@ export const FloatingActions: React.FC = () => {
             </div>
             <button
               onClick={() => setShowTooltip(false)}
+              aria-label="Dismiss notification"
               className="text-slate-400 hover:text-white flex-shrink-0 mt-0.5"
             >
               <X className="w-3 h-3" />

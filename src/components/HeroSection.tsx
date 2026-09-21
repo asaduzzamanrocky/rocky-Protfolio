@@ -10,7 +10,7 @@ import {
 import { ThemeMode } from '../types';
 import { ToolLogosMarquee } from './ToolLogosMarquee';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { heroVideoPosterImg } from '../assets/images';
+
 
 interface HeroSectionProps {
   theme: ThemeMode;
@@ -74,17 +74,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
           <div className="hero-mobile-atmosphere" aria-hidden="true" />
           {/* Keep a static poster visible while the video is downloading so
               the hero never flashes or briefly shows an empty background. */}
-          <img
-            src={heroVideoPosterImg}
-            alt=""
-            aria-hidden="true"
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${isVideoReady ? 'opacity-0' : 'opacity-95'}`}
-          />
+          
           {shouldPlayVideo && (
             <video
               ref={videoRef}
               src="/Man_standing_with_red_neon_202609031435.mp4"
-              poster={heroVideoPosterImg}
+              
               autoPlay
               loop
               muted

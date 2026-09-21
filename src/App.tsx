@@ -147,15 +147,15 @@ function AppInner() {
 }
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Keep the branded loader visible long enough to avoid a flash while the
     // hero poster and fonts are being prepared, without trapping visitors on
     // a slow connection.
     const startedAt = Date.now();
-    const minimumDuration = 1100;
-    const maximumDuration = 3500;
+    const minimumDuration = 300;
+    const maximumDuration = 2000;
     let completed = false;
 
     const finishLoading = () => {

@@ -250,10 +250,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Name */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-mono text-slate-300">
+                      <label htmlFor="contact-name" className="block text-xs font-mono text-slate-300">
                         Full Name / Company <span className="text-[#00b95a]">*</span>
                       </label>
                       <input
+                        id="contact-name"
                         type="text"
                         name="name"
                         required
@@ -266,10 +267,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
                     {/* Email */}
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-mono text-slate-300">
+                      <label htmlFor="contact-email" className="block text-xs font-mono text-slate-300">
                         Work Email Address <span className="text-[#00b95a]">*</span>
                       </label>
                       <input
+                        id="contact-email"
                         type="email"
                         name="email"
                         required
@@ -283,10 +285,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
                   {/* Service Selection */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-mono text-slate-300">
+                    <label htmlFor="service-select" className="block text-xs font-mono text-slate-300">
                       Required Service Focus
                     </label>
                     <select
+                      id="service-select"
                       value={formData.service}
                       name="service"
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
@@ -302,10 +305,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
                   {/* Message */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-mono text-slate-300">
+                    <label htmlFor="contact-message" className="block text-xs font-mono text-slate-300">
                       Project Goals & Timeline <span className="text-[#00b95a]">*</span>
                     </label>
                     <textarea
+                      id="contact-message"
                       required
                       name="message"
                       rows={4}
