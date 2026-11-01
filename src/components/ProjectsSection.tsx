@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import {
   ExternalLink,
@@ -29,11 +29,26 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (!activeModalProject || !dialogRef.current) return;
+    const dialog = dialogRef.current;
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      trigger?.focus();
+    };
+  }, [activeModalProject]);
 
   const isLight = theme === 'light-contrast';
 
   const categories = [
-    { id: 'all', label: 'All Projects (60+)', count: PROJECTS.length },
+    { id: 'all', label: 'All Projects', count: PROJECTS.length },
     { id: 'healthcare', label: 'Healthcare & Care Facilities', count: PROJECTS.filter(p => p.category === 'healthcare').length },
     { id: 'corporate', label: 'Corporate & Tech Solutions', count: PROJECTS.filter(p => p.category === 'corporate').length },
     { id: 'ecommerce', label: 'E-Commerce & WooCommerce', count: PROJECTS.filter(p => p.category === 'ecommerce').length },
@@ -110,9 +125,10 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
+                aria-label="Search projects"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search platforms..."
+                placeholder="Search projects, skills or domains..."
                 className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs font-mono border focus:outline-none transition-all ${isLight
                   ? 'bg-slate-50 border-slate-300 text-slate-900 focus:border-slate-500'
                   : 'bg-white/5 border-white/10 text-white placeholder-slate-500 focus:border-orange-500/50 focus:bg-white/[0.07]'
@@ -120,6 +136,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
               />
               {searchQuery && (
                 <button
+                  aria-label="Clear project search"
                   onClick={() => setSearchQuery('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"
                 >
@@ -144,6 +161,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
               return (
                 <button
                   key={cat.id}
+                  aria-pressed={isSelected}
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-medium font-mono transition-all flex items-center gap-2 ${isSelected
                     ? 'bg-[#00b95a]/20 text-[#00b95a] border border-[#00b95a]/50 shadow-[0_0_15px_rgba(0,185,90,0.25)]'
@@ -162,6 +180,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
 
         </motion.div>
 
+        <p className="sr-only" role="status" aria-live="polite">
+          {filteredProjects.length} projects found. Page {currentPage + 1} of {totalPages}.
+        </p>
         {/* Editorial Showcase Mode */}
         {false ? (
           <div className="space-y-10 mb-12">
@@ -284,6 +305,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                     className="rounded-2xl border p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 bg-[#1e1e1e] border-white/10 hover:border-[#00b95a]/40 hover:shadow-xl hover:shadow-[#00b95a]/10 min-h-[220px]"
                   >
                     <div>
+                      {project.previewImage && (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                          aria-label={`Visit ${project.title} website, opens in a new tab`}
+                          onClick={(e) => handleLiveClick(project, e)}
+                          className="block mb-4 overflow-hidden rounded-xl border border-white/10">
+                          <img src={project.previewImage} alt={`${project.title} homepage preview`}
+                            width={1265} height={712} loading="lazy" decoding="async"
+                            className="w-full aspect-video object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
+                        </a>
+                      )}
                       <div className="flex items-center justify-between gap-1.5 mb-3">
                         <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border bg-[#00b95a]/10 text-[#00b95a] border-[#00b95a]/20">
                           {project.category}
@@ -416,11 +447,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
       {/* Project Detail Modal */}
       {
         activeModalProject && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <dialog ref={dialogRef} aria-labelledby="project-dialog-title"
+            onCancel={() => setActiveModalProject(null)}
+            onClose={() => setActiveModalProject(null)}
+            onClick={(event) => { if (event.target === event.currentTarget) setActiveModalProject(null); }}
+            className="project-dialog fixed inset-0 m-auto w-full max-w-none h-full max-h-none bg-transparent open:flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
             <div className={`relative w-full max-w-2xl rounded-3xl border p-6 sm:p-8 shadow-2xl my-8 ${isLight ? 'bg-white border-slate-200 text-slate-900' : 'bg-[#0e1017] border-red-500/30 text-white'
               }`}>
 
               <button
+                aria-label="Close project details"
                 onClick={() => setActiveModalProject(null)}
                 className="absolute top-5 right-5 p-2 rounded-xl bg-white/10 hover:bg-red-600 text-white transition-all"
               >
@@ -439,7 +475,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                       </span>
                     )}
                   </div>
-                  <h3 className="font-display font-extrabold text-2xl sm:text-3xl text-white">
+                  <h3 id="project-dialog-title" className="font-display font-extrabold text-2xl sm:text-3xl text-white">
                     {activeModalProject.title}
                   </h3>
                   <a
@@ -511,7 +547,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                       onClick={(e) => handleLiveClick(activeModalProject, e)}
                       className="px-5 py-2.5 rounded-xl font-display font-semibold text-xs text-white bg-red-600 hover:bg-red-500 flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
                     >
-                      <span>Launch Live Production Domain</span>
+                      <span>Visit Live Website</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
@@ -520,7 +556,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
               </div>
 
             </div>
-          </div>
+          </dialog>
         )
       }
 

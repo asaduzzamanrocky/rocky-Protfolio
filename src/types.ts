@@ -11,6 +11,7 @@ export interface Project {
   features: string[];
   metrics?: string;
   liveUrl: string;
+  previewImage?: string;
   isFeatured?: boolean;
 }
 

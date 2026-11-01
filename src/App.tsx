@@ -90,8 +90,9 @@ export default function App() {
         activeSection={activeSection}
       />
 
+      <a className="skip-to-content" href="#main-content">Skip to content</a>
       {/* Main Content Sections with Parallax Scrolling */}
-      <main className="relative z-10">
+      <main id="main-content" tabIndex={-1} className="relative z-10">
         <HeroSection
           theme={theme}
         />

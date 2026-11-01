@@ -1,20 +1,37 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Asaduzzaman Rocky — Portfolio
 
-# Run and deploy your AI Studio app
+React 19, TypeScript, Tailwind CSS and Vite portfolio deployed on Vercel.
 
-This contains everything you need to run your app locally.
+## Local development
 
-View your app in AI Studio: https://ai.studio/apps/05759ac4-b56d-43e7-ac3e-3d9fda78b6d5
+Requires Node.js and npm.
 
-## Run Locally
+```sh
+npm ci
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+The frontend runs at http://localhost:3000. No Gemini API key is required for the portfolio frontend.
 
+## Checks and production build
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```sh
+npm run lint
+npm run build
+npm run preview
+```
+
+The production output is `dist/`. The root TypeScript configuration checks the frontend and Vite configuration. The optional `server/` package maintains its own dependencies, configuration and setup instructions.
+
+The existing contact form uses Formspree. Do not submit real enquiries during routine preview testing.
+
+## Portfolio improvements — November 2026
+
+- Added local homepage previews for Aabe Home Healthcare, Moringa Care and Family Transport, with lazy loading and descriptive alternative text.
+- Updated those three project descriptions to match the reviewed websites and removed their unverified outcome metrics.
+- Added native modal project details with keyboard focus containment, Escape dismissal and focus restoration.
+- Added project search labels, selected filter states, result announcements, mobile menu state and a skip link.
+- Added reduced-motion support and clearer search/social metadata with the existing canonical production URL.
+- Removed an unused, unavailable purgecss dependency that blocked installation.
+
+Validation: production build and frontend type check passed. Browser checks confirmed loaded screenshots, project search, native modal focus, Escape dismissal and focus restoration, plus a 390px mobile layout without horizontal overflow. Mobile navigation exposes its expanded state. No browser console errors were observed. The contact form was not submitted; email delivery and the separate server package were not tested.

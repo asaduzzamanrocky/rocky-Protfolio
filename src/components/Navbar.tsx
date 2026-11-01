@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(false);
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     }
   };
 
@@ -115,6 +115,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
               id="mobile-menu-toggle-btn"
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
@@ -123,7 +125,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden mx-4 mt-3 rounded-3xl border border-white/10 bg-[#1e1e1e]/95 px-4 pt-3 pb-4 text-white shadow-2xl backdrop-blur-2xl">
+        <nav id="mobile-navigation" aria-label="Mobile navigation" className="md:hidden mx-4 mt-3 rounded-3xl border border-white/10 bg-[#1e1e1e]/95 px-4 pt-3 pb-4 text-white shadow-2xl backdrop-blur-2xl">
           <div className="flex items-center justify-between pb-2 border-b border-white/10">
             <div className="flex items-center gap-2">
               <Laptop className="w-4 h-4 text-[#00b95a]" />
@@ -161,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>WhatsApp Direct</span>
             </a>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );
