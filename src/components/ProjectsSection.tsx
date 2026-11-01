@@ -1,565 +1,306 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
-import {
-  ExternalLink,
-  Search,
-  Layers,
-  CheckCircle2,
-  Sparkles,
-  ArrowUpRight,
-  Filter,
-  Globe,
-  X,
-  Zap,
-  TrendingUp,
-  ShieldAlert,
-  ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
-import { PROJECTS } from '../data/portfolioData';
-import { Project, ThemeMode } from '../types';
-import { AnalyticsService } from '../services/analyticsService';
+import React, { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, Search, X, ArrowDown } from "lucide-react";
+import { PROJECTS } from "../data/portfolioData";
+import { Project, ThemeMode } from "../types";
+import { AnalyticsService } from "../services/analyticsService";
 
-interface ProjectsSectionProps {
-  theme: ThemeMode;
-}
+const selectedIds = ["aabe-healthcare", "moringa-care", "family-transport"];
+const selected = selectedIds.map((id) =>
+  PROJECTS.find((project) => project.id === id)!,
+);
+const notes: Record<string, { need: string; approach: string; focus: string }> =
+  {
+    "aabe-healthcare": {
+      need: "Make care services and enquiry routes easy to understand.",
+      approach:
+        "Bring service information, appointment access, and referrals into a clear website structure.",
+      focus: "Service discovery & enquiries",
+    },
+    "moringa-care": {
+      need: "Help families understand in-home care and find a way to get in touch.",
+      approach:
+        "Connect care information with contact, referral, and appointment options.",
+      focus: "Care information & contact",
+    },
+    "family-transport": {
+      need: "Help visitors understand transport services and find the booking route.",
+      approach:
+        "Present the service offering with a direct path to trip enquiries.",
+      focus: "Service information & bookings",
+    },
+  };
+const filters = [
+  { id: "all", label: "All work" },
+  { id: "healthcare", label: "Healthcare" },
+  { id: "corporate", label: "Business" },
+  { id: "ecommerce", label: "eCommerce" },
+  { id: "uiux", label: "UI/UX" },
+];
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+export const ProjectsSection: React.FC<{ theme: ThemeMode }> = () => {
+  const [active, setActive] = useState<Project | null>(null);
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
   const dialogRef = useRef<HTMLDialogElement>(null);
-
   useEffect(() => {
-    if (!activeModalProject || !dialogRef.current) return;
+    if (!active || !dialogRef.current) return;
     const dialog = dialogRef.current;
-    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const previousOverflow = document.body.style.overflow;
+    const trigger =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    const overflow = document.body.style.overflow;
     dialog.showModal();
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       dialog.close();
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = overflow;
       trigger?.focus();
     };
-  }, [activeModalProject]);
-
-  const isLight = theme === 'light-contrast';
-
-  const categories = [
-    { id: 'all', label: 'All Projects', count: PROJECTS.length },
-    { id: 'healthcare', label: 'Healthcare & Care Facilities', count: PROJECTS.filter(p => p.category === 'healthcare').length },
-    { id: 'corporate', label: 'Corporate & Tech Solutions', count: PROJECTS.filter(p => p.category === 'corporate').length },
-    { id: 'ecommerce', label: 'E-Commerce & WooCommerce', count: PROJECTS.filter(p => p.category === 'ecommerce').length },
-    { id: 'uiux', label: 'UI/UX Case Studies (Behance)', count: PROJECTS.filter(p => p.category === 'uiux').length },
-  ];
-
-  const filteredProjects = PROJECTS.filter((project) => {
-    const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
-    const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.domain.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.technologies.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const itemsPerPage = 8;
-  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / itemsPerPage));
-
-  // Reset pagination on category or search query change
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [selectedCategory, searchQuery]);
-
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
-
-  const currentProjects = filteredProjects.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-
-  const handleLiveClick = (project: Project, e: React.MouseEvent) => {
-    AnalyticsService.trackEvent('project_click', `Visited: ${project.title}`, {
+  }, [active]);
+  const search = query.trim().toLowerCase();
+  const results = PROJECTS.filter(
+    (p) =>
+      (category === "all" || p.category === category) &&
+      [p.title, p.domain, ...p.technologies].some((value) =>
+        value.toLowerCase().includes(search),
+      ),
+  );
+  const track = (project: Project) =>
+    AnalyticsService.trackEvent("project_click", `Visited ${project.title}`, {
       projectId: project.id,
-      domain: project.domain,
-      category: project.category
     });
-  };
-
   return (
-    <section id="projects" className="py-20 sm:py-24 relative bg-transparent text-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Case study grid header and filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8"
-        >
-          <div className="space-y-3">
-            <span className="font-mono text-xs font-bold text-[#00b95a] tracking-widest uppercase block">
-              Selected Work // Case Studies
-            </span>
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-              Websites Built, Fixed &{' '}
-              <span className="text-[#00b95a]">
-                Case Studies
-              </span>
+    <section id="projects" className="studio-section studio-work">
+      <div className="studio-wrap">
+        <div className="studio-section-heading">
+          <div>
+            <p className="studio-eyebrow">01 / SELECTED WORK</p>
+            <h2>
+              Real websites.
+              <br />
+              <span>A closer look.</span>
             </h2>
-            <p className="text-sm sm:text-base text-slate-400 max-w-2xl">
-              Each case study shows the project context, the work completed, and the technology used—using the details available for that project.
-            </p>
           </div>
-
-          {/* Project Search */}
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Search Bar */}
-            <div className="w-full sm:w-64 relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                aria-label="Search projects"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search projects, skills or domains..."
-                className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs font-mono border focus:outline-none transition-all ${isLight
-                  ? 'bg-slate-50 border-slate-300 text-slate-900 focus:border-slate-500'
-                  : 'bg-white/5 border-white/10 text-white placeholder-slate-500 focus:border-orange-500/50 focus:bg-white/[0.07]'
-                  }`}
-              />
-              {searchQuery && (
+          <p>
+            A few projects from the portfolio, with the context behind the
+            interface and live websites you can explore.
+          </p>
+        </div>
+        <div className="studio-project-list">
+          {selected.map((project, index) => (
+            <article className="studio-project" key={project.id}>
+              <a
+                className={`studio-project-image project-tone-${index}`}
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${project.title}, opens in a new tab`}
+                onClick={() => track(project)}
+              >
+                <div className="studio-browser-bar" aria-hidden="true">
+                  <span>● ● ●</span>
+                  <span>{project.domain}</span>
+                  <ArrowUpRight size={15} />
+                </div>
+                <img
+                  src={project.previewImage}
+                  alt={`${project.title} homepage preview`}
+                  width={1265}
+                  height={712}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="project-visit">
+                  Visit website <ArrowUpRight size={16} />
+                </span>
+              </a>
+              <div className="studio-project-content">
+                <div className="studio-project-index">
+                  <span>0{index + 1}</span>
+                  <span>{index === 2 ? "TRANSPORTATION" : "HEALTHCARE"}</span>
+                </div>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <dl>
+                  <div>
+                    <dt>PLATFORM</dt>
+                    <dd>WordPress & Elementor</dd>
+                  </div>
+                  <div>
+                    <dt>FOCUS</dt>
+                    <dd>{notes[project.id].focus}</dd>
+                  </div>
+                </dl>
                 <button
-                  aria-label="Clear project search"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"
+                  className="studio-text-link"
+                  onClick={() => setActive(project)}
+                  aria-label={`Explore ${project.title} project`}
                 >
-                  <X className="w-3.5 h-3.5" />
+                  Explore the project <ArrowUpRight size={18} />
                 </button>
-              )}
-            </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="studio-archive-intro">
+          <div>
+            <span className="studio-eyebrow">THERE’S MORE TO EXPLORE</span>
+            <p>Different businesses. Different website needs.</p>
           </div>
-        </motion.div>
-
-        {/* Filter Pills & View Mode Switcher */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6"
+          <button
+            className="studio-outline-button"
+            aria-expanded={archiveOpen}
+            aria-controls="project-archive"
+            onClick={() => setArchiveOpen(!archiveOpen)}
+          >
+            {archiveOpen
+              ? "Close project archive"
+              : `Explore all ${PROJECTS.length} projects`}
+            <ArrowDown size={17} />
+          </button>
+        </div>
+        <div
+          id="project-archive"
+          hidden={!archiveOpen}
+          className="studio-archive"
         >
-          <div className="flex flex-wrap items-center gap-2">
-            {categories.map((cat) => {
-              const isSelected = selectedCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  aria-pressed={isSelected}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium font-mono transition-all flex items-center gap-2 ${isSelected
-                    ? 'bg-[#00b95a]/20 text-[#00b95a] border border-[#00b95a]/50 shadow-[0_0_15px_rgba(0,185,90,0.25)]'
-                    : 'bg-white/[0.03] text-slate-400 hover:text-white hover:bg-white/[0.08] border border-white/5'
-                    }`}
-                >
-                  <span>{cat.label}</span>
-                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-[#00b95a]/30 text-white' : 'bg-white/10 text-slate-400'
-                    }`}>
-                    {cat.count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-        </motion.div>
-
-        <p className="sr-only" role="status" aria-live="polite">
-          {filteredProjects.length} projects found. Page {currentPage + 1} of {totalPages}.
-        </p>
-        {/* Editorial Showcase Mode */}
-        {false ? (
-          <div className="space-y-10 mb-12">
-            {filteredProjects.map((project, index) => {
-              const numStr = (index + 1).toString().padStart(2, '0');
-              return (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 35 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  className={`relative rounded-3xl border p-6 sm:p-10 transition-all duration-500 group overflow-hidden ${isLight
-                    ? 'bg-slate-50 border-slate-200 hover:border-slate-300 shadow-sm'
-                    : 'bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-black border-white/10 hover:border-orange-500/40 shadow-2xl'
-                    }`}
-                >
-                  <div className="absolute right-4 -top-8 font-display font-black text-8xl sm:text-9xl text-white/[0.03] group-hover:text-orange-500/[0.07] pointer-events-none select-none transition-colors">
-                    {numStr}
-                  </div>
-
-                  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div className="lg:col-span-8 space-y-4">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-xs text-orange-500 font-bold tracking-wider">
-                          {numStr} // {project.category.toUpperCase()}
-                        </span>
-
-                        {project.metrics && (
-                          <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-                            <TrendingUp className="w-3 h-3" />
-                            {project.metrics}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-orange-400 transition-colors">
-                        {project.title}
-                      </h3>
-
-                      <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-3xl">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {project.technologies.map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-2 text-xs font-mono text-slate-400 pt-2">
-                        <Globe className="w-3.5 h-3.5 text-orange-500" />
-                        <span className="text-slate-300 font-semibold">{project.domain}</span>
-                      </div>
-                    </div>
-
-                    <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-stretch justify-center gap-3">
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => handleLiveClick(project, e)}
-                        className="px-6 py-3.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-sans text-xs font-bold tracking-wide uppercase flex items-center justify-center gap-2 shadow-lg shadow-orange-500/30 transition-all group-hover:scale-[1.02]"
-                      >
-                        <span>Launch Live Website</span>
-                        <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </a>
-
-                      <button
-                        onClick={() => setActiveModalProject(project)}
-                        className="px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs flex items-center justify-center gap-2 transition-all"
-                      >
-                        <Layers className="w-3.5 h-3.5 text-orange-400" />
-                        <span>Inspect Architecture</span>
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        ) : (
-          /* Static responsive case-study grid */
-          <div className="relative">
-            {/* Side Floating Navigation Arrow (Left) */}
-            {totalPages > 1 && (
-              <button
-                onClick={handlePrevPage}
-                className="hidden xl:flex absolute -left-7 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
-                title="Scroll Left (Previous 4x2 Set)"
-                id="projects-grid-left-floating-arrow"
-              >
-                <ChevronLeft className="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" />
-              </button>
-            )}
-
-            {/* Side Floating Navigation Arrow (Right) */}
-            {totalPages > 1 && (
-              <button
-                onClick={handleNextPage}
-                className="hidden xl:flex absolute -right-7 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
-                title="Scroll Right (Next 4x2 Set)"
-                id="projects-grid-right-floating-arrow"
-              >
-                <ChevronRight className="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" />
-              </button>
-            )}
-
-            {/* Compact responsive project grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              {currentProjects.map((project, index) => {
-                return (
-                  <div
-                    key={project.id}
-                    className="rounded-2xl border p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 bg-[#1e1e1e] border-white/10 hover:border-[#00b95a]/40 hover:shadow-xl hover:shadow-[#00b95a]/10 min-h-[220px]"
-                  >
-                    <div>
-                      {project.previewImage && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                          aria-label={`Visit ${project.title} website, opens in a new tab`}
-                          onClick={(e) => handleLiveClick(project, e)}
-                          className="block mb-4 overflow-hidden rounded-xl border border-white/10">
-                          <img src={project.previewImage} alt={`${project.title} homepage preview`}
-                            width={1265} height={712} loading="lazy" decoding="async"
-                            className="w-full aspect-video object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
-                        </a>
-                      )}
-                      <div className="flex items-center justify-between gap-1.5 mb-3">
-                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border bg-[#00b95a]/10 text-[#00b95a] border-[#00b95a]/20">
-                          {project.category}
-                        </span>
-
-                        {project.metrics && (
-                          <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#00b95a]/15 text-[#00b95a] border border-[#00b95a]/30 flex items-center gap-1">
-                            <TrendingUp className="w-2.5 h-2.5" />
-                            {project.metrics}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="font-display font-bold text-base text-white group-hover:text-[#00b95a] transition-colors line-clamp-1">
-                        {project.title}
-                      </h3>
-                      <div className="flex items-center gap-1 text-xs font-mono text-slate-400 mt-0.5 mb-2.5">
-                        <Globe className="w-3 h-3 text-[#00b95a] shrink-0" />
-                        <span className="truncate">{project.domain}</span>
-                      </div>
-
-                      <dl className="grid grid-cols-2 gap-x-3 gap-y-2 mb-3 text-[10px] leading-relaxed">
-                        <div><dt className="font-mono uppercase text-slate-500">Industry</dt><dd className="text-slate-300 capitalize">{project.category}</dd></div>
-                        <div><dt className="font-mono uppercase text-slate-500">My Role</dt><dd className="text-slate-300">Website Designer & Developer</dd></div>
-                        <div className="col-span-2"><dt className="font-mono uppercase text-slate-500">Problem</dt><dd className="text-slate-400 line-clamp-2">{project.description}</dd></div>
-                      </dl>
-
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-slate-300"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-slate-500">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => setActiveModalProject(project)}
-                        className="text-xs font-mono text-slate-300 hover:text-white flex items-center gap-1 hover:underline"
-                      >
-                        <Layers className="w-3 h-3 text-[#00b95a]" />
-                        <span>View Case Study</span>
-                        <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </button>
-
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => handleLiveClick(project, e)}
-                        className="px-3 py-1 rounded-full text-xs font-mono font-medium text-white bg-[#00b95a] hover:bg-[#00984a] flex items-center gap-1 transition-all shadow-sm"
-                      >
-                        <span>Live Site</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    </div>
-                  </div>
-                );
-              })}
+          <div className="archive-toolbar">
+            <div className="archive-search">
+              <Search size={18} />
+              <input
+                type="search"
+                aria-label="Search project archive"
+                placeholder="Search projects or technologies"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
             </div>
-
-            {/* Manual pagination controls */}
-            {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10">
-                <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Showing Page {currentPage + 1} of {totalPages} (8 platforms per page)</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handlePrevPage}
-                    className="px-4 py-2 rounded-full bg-black/60 hover:bg-orange-500 text-white border border-white/15 text-xs font-mono transition-all flex items-center gap-1.5"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    <span>Previous</span>
-                  </button>
-
-                  {/* Page Pill Indicators */}
-                  <div className="flex items-center gap-1 px-2">
-                    {Array.from({ length: totalPages }).map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentPage(idx)}
-                        className={`h-2 rounded-full transition-all ${currentPage === idx
-                          ? 'w-6 bg-[#00b95a]'
-                          : 'w-2 bg-white/20 hover:bg-white/40'
-                          }`}
-                        title={`Go to project page ${idx + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={handleNextPage}
-                    className="px-4 py-2 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white font-medium text-xs font-mono transition-all flex items-center gap-1.5 shadow-md shadow-[#00b95a]/30"
-                  >
-                    <span>Next</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {filteredProjects.length === 0 && (
-          <div className="p-12 text-center rounded-2xl border border-white/10 bg-white/[0.02] space-y-3">
-            <p className="text-sm text-slate-400">No projects found matching "{searchQuery}".</p>
-            <button
-              onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-              className="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-mono"
+            <div
+              className="archive-filters"
+              role="group"
+              aria-label="Filter project archive"
             >
-              Reset Filters
-            </button>
-          </div>
-        )}
-
-      </div>
-
-      {/* Project Detail Modal */}
-      {
-        activeModalProject && (
-          <dialog ref={dialogRef} aria-labelledby="project-dialog-title"
-            onCancel={() => setActiveModalProject(null)}
-            onClose={() => setActiveModalProject(null)}
-            onClick={(event) => { if (event.target === event.currentTarget) setActiveModalProject(null); }}
-            className="project-dialog fixed inset-0 m-auto w-full max-w-none h-full max-h-none bg-transparent open:flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
-            <div className={`relative w-full max-w-2xl rounded-3xl border p-6 sm:p-8 shadow-2xl my-8 ${isLight ? 'bg-white border-slate-200 text-slate-900' : 'bg-[#0e1017] border-red-500/30 text-white'
-              }`}>
-
-              <button
-                aria-label="Close project details"
-                onClick={() => setActiveModalProject(null)}
-                className="absolute top-5 right-5 p-2 rounded-xl bg-white/10 hover:bg-red-600 text-white transition-all"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[11px] font-mono uppercase px-2.5 py-0.5 rounded bg-red-500/20 text-red-400">
-                      {activeModalProject.category}
-                    </span>
-                    {activeModalProject.metrics && (
-                      <span className="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
-                        {activeModalProject.metrics}
-                      </span>
-                    )}
-                  </div>
-                  <h3 id="project-dialog-title" className="font-display font-extrabold text-2xl sm:text-3xl text-white">
-                    {activeModalProject.title}
-                  </h3>
-                  <a
-                    href={activeModalProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-mono text-red-400 hover:underline flex items-center gap-1 mt-1"
-                  >
-                    <Globe className="w-3.5 h-3.5" />
-                    <span>https://{activeModalProject.domain}</span>
-                    <ExternalLink className="w-3 h-3 ml-1" />
-                  </a>
-                </div>
-
-                <div className="space-y-3 text-sm text-slate-300 leading-relaxed">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Project</span><p className="mt-1 text-white">{activeModalProject.title}</p></div>
-                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Industry</span><p className="mt-1 text-white capitalize">{activeModalProject.category}</p></div>
-                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">My Role</span><p className="mt-1 text-white">Website Designer & Developer</p></div>
-                    <div className="rounded-xl bg-white/5 border border-white/10 p-3"><span className="font-mono text-[10px] uppercase text-slate-500">Technology</span><p className="mt-1 text-white">{activeModalProject.technologies.join(', ')}</p></div>
-                  </div>
-                  <div><h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">Problem</h4><p className="mt-1">{activeModalProject.description}</p></div>
-                  <div><h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">What I Did → Solution</h4><p className="mt-1">{activeModalProject.longDescription || activeModalProject.description}</p></div>
-                </div>
-
-                {/* Key Features List */}
-                <div className="space-y-3">
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Key Delivered Capabilities
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {activeModalProject.features.map((feat) => (
-                      <div key={feat} className="flex items-center gap-2 text-xs text-slate-300">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tech Stack Chips */}
-                <div className="space-y-2">
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Technologies Employed
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {activeModalProject.technologies.map((t) => (
-                      <span key={t} className="px-3 py-1 rounded-xl text-xs font-mono bg-white/5 border border-white/10 text-slate-200">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Modal Actions */}
-                <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-                  <button
-                    onClick={() => setActiveModalProject(null)}
-                    className="px-4 py-2 rounded-xl text-xs font-mono text-slate-400 hover:text-white"
-                  >
-                    Close Window
-                  </button>
-
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={activeModalProject.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => handleLiveClick(activeModalProject, e)}
-                      className="px-5 py-2.5 rounded-xl font-display font-semibold text-xs text-white bg-red-600 hover:bg-red-500 flex items-center gap-2 shadow-[0_0_15px_rgba(239,68,68,0.5)]"
-                    >
-                      <span>Visit Live Website</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-
+              {filters.map((filter) => (
+                <button
+                  key={filter.id}
+                  aria-pressed={category === filter.id}
+                  onClick={() => setCategory(filter.id)}
+                >
+                  {filter.label}
+                </button>
+              ))}
             </div>
-          </dialog>
-        )
-      }
-
-    </section >
+          </div>
+          <p role="status" aria-live="polite" className="archive-result-count">
+            {results.length} {results.length === 1 ? "project" : "projects"}
+          </p>
+          <div className="archive-grid">
+            {results.map((project) => (
+              <a
+                className="archive-project"
+                href={project.liveUrl}
+                key={project.id}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track(project)}
+              >
+                <span className="studio-eyebrow">
+                  {project.category === "uiux"
+                    ? "DESIGN PROJECT"
+                    : project.category.toUpperCase()}
+                </span>
+                <h3>
+                  {project.title}
+                  <ArrowUpRight size={20} />
+                </h3>
+                <span className="archive-domain">{project.domain}</span>
+                <span className="archive-link-label">
+                  {project.category === "uiux"
+                    ? "View design project"
+                    : "Visit website"}{" "}
+                  <span className="sr-only">(opens in a new tab)</span>
+                </span>
+              </a>
+            ))}
+          </div>
+          {results.length === 0 && (
+            <button
+              className="studio-text-link"
+              onClick={() => {
+                setQuery("");
+                setCategory("all");
+              }}
+            >
+              No matches. Reset filters <ArrowUpRight size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+      {active && (
+        <dialog
+          ref={dialogRef}
+          className="studio-dialog"
+          aria-labelledby="project-dialog-title"
+          onCancel={() => setActive(null)}
+          onClose={() => setActive(null)}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setActive(null);
+          }}
+        >
+          <div className="studio-dialog-content">
+            <button
+              className="dialog-close"
+              aria-label="Close project details"
+              onClick={() => setActive(null)}
+            >
+              <X size={22} />
+            </button>
+            <p className="studio-eyebrow">
+              PROJECT OVERVIEW / WORDPRESS & ELEMENTOR
+            </p>
+            <h2 id="project-dialog-title">{active.title}</h2>
+            <img
+              src={active.previewImage}
+              width={1265}
+              height={712}
+              alt={`${active.title} homepage`}
+            />
+            <div className="dialog-detail-grid">
+              <div>
+                <h3>The website need</h3>
+                <p>{notes[active.id].need}</p>
+              </div>
+              <div>
+                <h3>The approach</h3>
+                <p>{notes[active.id].approach}</p>
+              </div>
+            </div>
+            <div className="dialog-role">
+              <h3>Work shown</h3>
+              <p>{active.longDescription}</p>
+            </div>
+            <div className="studio-actions">
+              <a
+                className="studio-button"
+                href={active.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track(active)}
+              >
+                Visit live website <ArrowUpRight size={18} />
+              </a>
+              <button
+                className="studio-text-link"
+                onClick={() => setActive(null)}
+              >
+                Back to selected work
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+    </section>
   );
 };

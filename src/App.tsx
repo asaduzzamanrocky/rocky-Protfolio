@@ -1,147 +1,60 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
-import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { AboutSection } from './components/AboutSection';
-import { ProjectsSection } from './components/ProjectsSection';
-import { ExperienceSection } from './components/ExperienceSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
-import { FloatingActions } from './components/FloatingActions';
-import { DatalinesWithGrid } from './components/neonblade-ui/datalines-with-grid';
-import { ScrollProgressIndicator } from './components/ScrollProgressIndicator';
-import { ServicesSection } from './components/ServicesSection';
-import { ThemeMode } from './types';
-import { AnalyticsService } from './services/analyticsService';
+import React, { useEffect, useRef, useState } from "react";
+import { Navbar } from "./components/Navbar";
+import { HeroSection } from "./components/HeroSection";
+import { ProjectsSection } from "./components/ProjectsSection";
+import { ServicesSection } from "./components/ServicesSection";
+import { AboutSection } from "./components/AboutSection";
+import { ExperienceSection } from "./components/ExperienceSection";
+import { ContactSection } from "./components/ContactSection";
+import { Footer } from "./components/Footer";
+import { FloatingActions } from "./components/FloatingActions";
+import { ThemeMode } from "./types";
+import { AnalyticsService } from "./services/analyticsService";
 
 export default function App() {
-  const [theme, setTheme] = useState<ThemeMode>('dark-crimson');
-  const [activeSection, setActiveSection] = useState('hero');
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // High-performance Framer Motion Parallax Hooks
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  // Parallax transforms for ambient atmospheric light effects across the page
-  const ambientOrb1Y = useTransform(scrollYProgress, [0, 1], [-40, 520]);
-  const ambientOrb2Y = useTransform(scrollYProgress, [0, 1], [150, -350]);
-  const ambientGlowOpacity = useTransform(smoothProgress, [0, 1], [0.15, 0.9]);
-
+  const [theme, setTheme] = useState<ThemeMode>("dark-emerald");
+  const [activeSection, setActiveSection] = useState("hero");
+  const trackedVisit = useRef(false);
   useEffect(() => {
-    // Initialize analytics telemetry
     AnalyticsService.initialize();
-    AnalyticsService.trackEvent('page_view', 'Home Page View');
-
-    // Section Scroll Spy for accurate navigation
+    if (!trackedVisit.current) {
+      AnalyticsService.trackEvent("page_view", "Portfolio visit");
+      trackedVisit.current = true;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActiveSection(visible[0].target.id);
       },
-      { threshold: 0.25 }
+      { rootMargin: "-15% 0px -65% 0px", threshold: 0 },
     );
-
-    const sectionIds = ['hero', 'services', 'projects', 'about', 'contact'];
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
+    document
+      .querySelectorAll("main > section[id]")
+      .forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
-
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen bg-[#252525] text-slate-100 transition-colors duration-300 relative overflow-x-hidden"
-    >
-      <motion.div
-        style={{ opacity: ambientGlowOpacity }}
-        className="performance-glow fixed top-0 left-0 w-full h-24 bg-gradient-to-r from-transparent via-[#00b95a]/25 to-transparent blur-2xl pointer-events-none z-40"
-      />
-
-      {/* Floating Parallax Ambient Orbs */}
-      <motion.div
-        style={{ y: ambientOrb1Y }}
-        className="performance-glow fixed top-1/4 -right-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
-      />
-      <motion.div
-        style={{ y: ambientOrb2Y }}
-        className="performance-glow fixed top-2/3 -left-44 w-96 h-96 rounded-full bg-[#00b95a]/15 blur-[140px] pointer-events-none z-0"
-      />
-
-      {/* Sticky Header with Personal Branding */}
+    <div className="studio-site">
+      <a className="skip-to-content" href="#main-content">
+        Skip to content
+      </a>
       <Navbar
         theme={theme}
         onThemeChange={setTheme}
         activeSection={activeSection}
       />
-
-      <a className="skip-to-content" href="#main-content">Skip to content</a>
-      {/* Main Content Sections with Parallax Scrolling */}
-      <main id="main-content" tabIndex={-1} className="relative z-10">
-        <HeroSection
-          theme={theme}
-        />
-
+      <main id="main-content" tabIndex={-1}>
+        <HeroSection theme={theme} />
+        <ProjectsSection theme={theme} />
         <ServicesSection theme={theme} />
-
-        <div className="site-grid-wrapper">
-          <div className="pointer-events-none absolute inset-0 z-0 opacity-90" aria-hidden="true">
-            <DatalinesWithGrid
-              lineColor="#00b95a"
-              shadowColor="#00b95a"
-              bgGridColor="rgba(0, 185, 90, 0.07)"
-              cellSize={50}
-              maxLines={5}
-              baseSpeed={1.2}
-              lineLength={150}
-              spawnProbability={0.04}
-              opacity={0.3}
-            />
-          </div>
-
-          <AboutSection
-            theme={theme}
-          />
-
-          <ProjectsSection
-            theme={theme}
-          />
-
-          <ExperienceSection
-            theme={theme}
-          />
-
-          <ContactSection
-            theme={theme}
-          />
-        </div>
+        <AboutSection theme={theme} />
+        <ExperienceSection theme={theme} />
+        <ContactSection theme={theme} />
       </main>
-
-      {/* Footer */}
-      <Footer
-        theme={theme}
-      />
-
-      {/* Floating contact actions, including Quick Message */}
+      <Footer theme={theme} />
       <FloatingActions />
-
-      {/* Minimalist Interactive Scroll Progress & Section Spy */}
-      <ScrollProgressIndicator theme={theme} activeSection={activeSection} />
     </div>
   );
 }

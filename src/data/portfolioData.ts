@@ -11,8 +11,8 @@ export const PERSONAL_INFO = {
   phoneRaw: '8801714722651',
   email: 'asaduzzamanrocky@gmail.com',
   links: {
-    linkedin: 'https://www.linkedin.com/in/asaduzzamanrocky',
-    behance: 'https://www.behance.net/asaduzzamanrocky',
+    linkedin: 'https://www.linkedin.com/in/asaduzzaman-rocky-464a32183/',
+    behance: 'https://www.behance.net/asaduzzrocky',
     agency: 'https://devdesigngrow.com',
     whatsapp: 'https://wa.me/8801714722651?text=Hello%20Rocky,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.',
   },
@@ -66,7 +66,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Transformed complex clinical service offerings into an intuitive, conversion-focused interface that connects patients with licensed home aides within minutes.',
     technologies: ['WordPress Core', 'ACF', 'Elementor Pro', 'Technical SEO'],
     features: ['Dynamic Service Finder', 'Emergency Contact Sticky Action', 'Lead Generation Pipeline'],
-    metrics: '+85% Lead Capture',
     liveUrl: 'https://prestigehcares.com',
     isFeatured: true,
   },
@@ -79,7 +78,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Architected an accessible non-profit hub that highlights grassroots health programs, patient stories, and streamlined community outreach registrations.',
     technologies: ['WordPress', 'ThemeREX', 'Custom PHP', 'Stripe Gateway'],
     features: ['Resource Library', 'Community Outreach Form', 'Donation Processing'],
-    metrics: '10K+ Monthly Reach',
     liveUrl: 'https://alisamcare.org',
   },
   {
@@ -91,7 +89,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Streamlined patient onboarding with responsive questionnaire flows and instant WhatsApp support integration.',
     technologies: ['WordPress', 'Elementor Pro', 'ACF', 'Speed Optimization'],
     features: ['Insurance Eligibility Checker', 'Care Plan Generator', 'WhatsApp Live Chat'],
-    metrics: '2.1s Mobile LCP',
     liveUrl: 'https://rahmahomehealth.com',
   },
   {
@@ -103,7 +100,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Crafted a bespoke layout highlighting verified caregivers, clinical standards, and 24/7 client coordination services.',
     technologies: ['WordPress Core', 'Custom CSS3', 'JavaScript', 'Core Web Vitals'],
     features: ['Caregiver Verification Grid', 'Direct Call CTAs', 'HIPAA Friendly Forms'],
-    metrics: '+68% Conversion',
     liveUrl: 'https://nadeerhomehealth.com',
   },
   {
@@ -115,7 +111,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'High-end aesthetic balancing medical credibility with warm residential comforts, designed to appeal to adult children making senior care decisions.',
     technologies: ['WordPress', 'Elementor Pro', 'Custom JS Animations'],
     features: ['Floor Plan Explorer', 'Amenities Gallery', 'Direct Appointment Booking'],
-    metrics: '+90% Tour Requests',
     liveUrl: 'https://clearvl.com',
   },
   {
@@ -139,7 +134,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Developed an appetizing and informative digital menu platform showcasing halal, allergen-free, and customized nutritional dietary care.',
     technologies: ['WordPress', 'Elementor Pro', 'Brand Identity', 'Responsive Design'],
     features: ['Nutritional Calculator', 'Bulk Institutional Ordering', 'Interactive Menu Gallery'],
-    metrics: 'Top 3 Regional Organic Rank',
     liveUrl: 'https://oasisfoodsmn.com',
   },
 
@@ -153,7 +147,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'The flagship agency platform serving international enterprise accounts, showcasing client ROI case studies, full-funnel digital pipelines, and speed audits.',
     technologies: ['WordPress Core', 'Custom Theme', 'Tailwind/CSS3', 'React Integrations', 'HubSpot CRM'],
     features: ['Interactive ROI Calculator', 'Instant Audit Tool', 'Agency Service Blueprint'],
-    metrics: '60+ Global Client Sites',
     liveUrl: 'https://devdesigngrow.com',
     isFeatured: true,
   },
@@ -166,7 +159,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Created a sparkling modern healthcare experience with interactive procedure guides, 3D smile gallery comparisons, and friction-free booking.',
     technologies: ['WordPress', 'Elementor Pro', 'Advanced CSS', 'Yoast SEO'],
     features: ['Before/After Smile Gallery', 'Online Consultation Flow', 'Automated Reminder SMS'],
-    metrics: '3.4x Booking Increase',
     liveUrl: 'https://nextdent.org',
     isFeatured: true,
   },
@@ -179,7 +171,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Engineered corporate architecture for Sydney tech enterprise, featuring dynamic service matrices, live case studies, and enterprise inquiry funnels.',
     technologies: ['WordPress', 'Custom Theme Development', 'PHP 8', 'Figma Systems', 'GCP'],
     features: ['IT Capability Matrix', 'Enterprise Quote Configurator', 'Global CDN Setup'],
-    metrics: '99.98% Uptime',
     liveUrl: 'https://trionixit.com.au',
     isFeatured: true,
   },
@@ -192,7 +183,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Engineered an ultra-accessible NDIS care coordination platform complying with Australian digital inclusion guidelines and speech readers.',
     technologies: ['WordPress Core', 'Elementor Pro', 'Accessible Markup', 'ACF'],
     features: ['NDIS Pricing Guide', 'Direct Coordinator Matcher', 'Text-to-Speech Ready'],
-    metrics: 'WCAG AAA Verified',
     liveUrl: 'https://nourishcare.com.au',
   },
   {
@@ -204,7 +194,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Designed an elegant, gallery-driven experience with ultra-fast lazy loaded imagery, project blueprints, and design consult forms.',
     technologies: ['WordPress', 'ThemeREX', 'JavaScript', 'Optimized CDN'],
     features: ['Ultra-HD Room Showcases', 'Design Material Specs', 'Cost Estimator Form'],
-    metrics: '85k+ Impressions',
     liveUrl: 'https://nuraniinterior.com',
   },
   {
@@ -216,7 +205,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Delivered an interactive university search directory, visa requirement checklist, and direct counselor booking integration.',
     technologies: ['WordPress', 'Elementor Pro', 'Gutenberg', 'RankMath SEO'],
     features: ['University Course Finder', 'Visa Document Checklist', '1-on-1 Counselor Portal'],
-    metrics: '4,000+ Students Advised',
     liveUrl: 'https://distelledu.com.au',
   },
   {
@@ -228,7 +216,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Created a supportive, easy-to-navigate portal for participants and their families, with clear service pathways and support worker bios.',
     technologies: ['WordPress', 'Elementor Pro', 'Speed Hardening'],
     features: ['Support Worker Profiles', 'Activity Schedule Hub', 'Immediate Callback Button'],
-    metrics: '+110% Conversion',
     liveUrl: 'https://openpathcare.com.au',
   },
   {
@@ -240,7 +227,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Structured a massive catalog of British accredited courses with online registration, batch booking, and digital certification verification.',
     technologies: ['WordPress Core', 'Custom PHP', 'Elementor Pro', 'Custom Post Types'],
     features: ['Course Schedule Calendar', 'Corporate Batch Enrollment', 'Certificate Authenticator'],
-    metrics: '12,000+ Enrolled',
     liveUrl: 'https://result.co.uk',
   },
   {
@@ -252,7 +238,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Developed a high-converting local SEO optimized platform allowing operators and fleet managers to book on-site testing and renewals.',
     technologies: ['WordPress', 'Elementor Pro', 'Local SEO Schema', 'WooCommerce Bookings'],
     features: ['License Expiry Calculator', 'Weekend Slot Selector', 'Corporate Invoice Portal'],
-    metrics: '#1 UK Regional Ranking',
     liveUrl: 'https://forklifttrainingcentre.co.uk',
   },
   {
@@ -264,7 +249,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Clean enterprise interface showcasing B2B hardware distribution, server maintenance SLAs, and client case studies.',
     technologies: ['WordPress', 'ACF', 'Elementor Pro', 'DDoS Protection'],
     features: ['Hardware Catalog', 'Service Level Agreement Matrix', 'B2B Client Portal'],
-    metrics: '99.9% Reliable Core',
     liveUrl: 'https://aexbd.com',
   },
 
@@ -278,7 +262,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Engineered a rock-solid WooCommerce store capable of handling viral product drops, integrating bKash, Nagad, and credit card payments seamlessly.',
     technologies: ['WooCommerce', 'WordPress', 'bKash Gateway', 'Custom Product Builder', 'Redis Cache'],
     features: ['High-Concurrency Flash Drops', 'Custom Size Advisor', 'One-Click Mobile Checkout', 'Live Stock Sync'],
-    metrics: '45,000+ Shirts Sold',
     liveUrl: 'https://heavymetaltshirtbd.com',
     isFeatured: true,
   },
@@ -291,7 +274,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Integrated a real-time product customizer allowing customers to upload designs, preview embroidery/print, and checkout instantly.',
     technologies: ['WooCommerce', 'Elementor Pro', 'Stripe Gateway', 'Fabric Canvas API'],
     features: ['Interactive Tee Customizer', 'Bulk Quantity Discounts', 'Automated Print File Export'],
-    metrics: '3.8x Repeat Orders',
     liveUrl: 'https://teashirthut.com',
   },
   {
@@ -303,7 +285,6 @@ export const PROJECTS: Project[] = [
     longDescription: 'Architected an enterprise e-commerce platform with dual B2B wholesale pricing tiers, container shipping calculators, and multi-currency billing.',
     technologies: ['WooCommerce Core', 'PayPal API', 'Stripe', 'Custom Tax Rules'],
     features: ['Tiered Wholesale Pricing', 'Multi-currency Support', 'Automated Customs Invoicing'],
-    metrics: '$1.2M+ Annual GMV',
     liveUrl: 'https://onkodgroup.com',
   },
 
@@ -317,8 +298,7 @@ export const PROJECTS: Project[] = [
     longDescription: 'Comprehensive mobile application design in Figma featuring micro-interactions, dark mode stadium lighting aesthetic, and real-time score feeds.',
     technologies: ['Figma', 'Interactive Prototyping', 'Design Systems', 'Micro-interactions'],
     features: ['Dynamic Match Telemetry', 'Fan Community Huddle', 'Smooth iOS Transition Physics'],
-    metrics: 'Top Featured on Behance',
-    liveUrl: 'https://www.behance.net/gallery/198231015/Abu-Lafy-Football-App',
+    liveUrl: 'https://www.behance.net/gallery/192167583/Abu-Lafy-FootBall-APPUiUX-Design-Full-App-Design',
     isFeatured: true,
   },
   {
@@ -330,8 +310,7 @@ export const PROJECTS: Project[] = [
     longDescription: 'Created a modular, distraction-free student learning hub with gamified progress milestones, course tracks, and responsive mentor review queues.',
     technologies: ['Figma', 'Adobe XD', 'Wireframing', 'User Heuristics'],
     features: ['Adaptive Curriculum Map', 'Distraction-Free Video Mode', 'Peer Feedback Threads'],
-    metrics: '94% Usability Score',
-    liveUrl: 'https://www.behance.net/gallery/198231015/Learning-IO',
+    liveUrl: 'https://www.behance.net/gallery/170450849/LearningIO-Web-Page-Design',
   },
   {
     id: 'moody-meditation',
@@ -342,8 +321,7 @@ export const PROJECTS: Project[] = [
     longDescription: 'Crafted an award-worthy meditation interface with soothing fluid gradients, tactile breathing haptic visual cues, and mood trend analytics.',
     technologies: ['Figma', 'Adobe Illustrator', 'Interaction Design', 'Color Psychology'],
     features: ['Biorhythm Audio Player', 'Haptic Breathing Ring', 'Weekly Mood Journal'],
-    metrics: 'Loved by 2,000+ Designers',
-    liveUrl: 'https://www.behance.net/gallery/198231015/Moody-Meditation',
+    liveUrl: 'https://www.behance.net/gallery/167003707/Moody-Your-Personalized-Soundtrack-for-Meditation',
   },
   {
     id: 'genesys-redesign',
@@ -354,8 +332,7 @@ export const PROJECTS: Project[] = [
     longDescription: 'Revamped enterprise B2B sales funnel with interactive product tours, customer ROI benchmarks, and friction-reduced demo scheduling.',
     technologies: ['Figma', 'Conversion Rate Optimization (CRO)', 'Design Systems'],
     features: ['Interactive Solution Selector', 'B2B Social Proof Sliders', 'Instant Demo Scheduler'],
-    metrics: '+41% Sign-up Rate',
-    liveUrl: 'https://www.behance.net/gallery/198231015/Genesys-Software',
+    liveUrl: 'https://www.behance.net/gallery/159868287/Redesign-Genesys-Software-Landing-Page',
   },
 ];
 
