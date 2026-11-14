@@ -45,6 +45,6 @@ To add or edit projects, update `src/data/portfolioData.ts`.
 
 ## Contact
 
-- LinkedIn: [asaduzzamanrocky](https://www.linkedin.com/in/asaduzzamanrocky)
+- LinkedIn: [Asaduzzaman Rocky](https://www.linkedin.com/in/asaduzzaman-rocky-464a32183/)
 - Behance: [asaduzzamanrocky](https://www.behance.net/asaduzzamanrocky)
 - Agency: [Dev Design Grow](https://devdesigngrow.com)

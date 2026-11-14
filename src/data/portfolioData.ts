@@ -11,7 +11,7 @@ export const PERSONAL_INFO = {
   phoneRaw: '8801714722651',
   email: 'asaduzzamanrocky@gmail.com',
   links: {
-    linkedin: 'https://www.linkedin.com/in/asaduzzamanrocky',
+    linkedin: 'https://www.linkedin.com/in/asaduzzaman-rocky-464a32183/',
     behance: 'https://www.behance.net/asaduzzamanrocky',
     agency: 'https://devdesigngrow.com',
     whatsapp: 'https://wa.me/8801714722651?text=Hello%20Rocky,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.',
