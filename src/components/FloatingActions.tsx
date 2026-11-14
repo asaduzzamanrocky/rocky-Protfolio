@@ -6,13 +6,17 @@ import { AnalyticsService } from '../services/analyticsService';
 
 export const FloatingActions: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Auto-hide tooltip after 5s
+  // Show the tooltip briefly after the page settles, then hide it.
   useEffect(() => {
-    const t = setTimeout(() => setShowTooltip(false), 5000);
-    return () => clearTimeout(t);
+    const show = setTimeout(() => setShowTooltip(true), 2500);
+    const hide = setTimeout(() => setShowTooltip(false), 8500);
+    return () => {
+      clearTimeout(show);
+      clearTimeout(hide);
+    };
   }, []);
 
   // Close on outside click
@@ -116,7 +120,7 @@ export const FloatingActions: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9, x: 10 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.9, x: 10 }}
-            className="relative bg-[#1a1a1a] text-white border border-[#00b95a]/40 p-3 rounded-2xl shadow-xl max-w-[200px] text-xs font-mono flex items-start gap-2"
+            className="relative bg-[#1a1a1a] text-white border border-[#00b95a]/40 p-3 rounded-2xl shadow-xl max-w-[200px] text-xs font-mono hidden sm:flex items-start gap-2"
           >
             <div>
               <div className="flex items-center gap-1.5 text-[#00b95a] font-bold mb-0.5">

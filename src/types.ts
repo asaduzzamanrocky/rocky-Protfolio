@@ -32,25 +32,3 @@ export interface ToolItem {
   iconName: string;
   highlight: string;
 }
-
-export interface AnalyticsEvent {
-  id: string;
-  timestamp: string;
-  type: 'page_view' | 'project_click' | 'cta_click' | 'contact_submit' | 'whatsapp_click' | 'button_click';
-  label: string;
-  device: 'Mac' | 'iPhone' | 'Windows' | 'Android' | 'Other';
-  details?: Record<string, unknown>;
-}
-
-export interface NotificationPreferences {
-  frequency: 'realtime' | 'daily' | 'weekly' | 'critical_only';
-  channels: {
-    email: boolean;
-    whatsapp: boolean;
-    browserPush: boolean;
-    soundEffects: boolean;
-  };
-  clientInquiryAlerts: boolean;
-  weeklyTrafficReport: boolean;
-  securityPings: boolean;
-}

@@ -4,12 +4,10 @@ import {
   ArrowRight,
   Sparkles,
   CheckCircle2,
-  ExternalLink,
   Globe2
 } from 'lucide-react';
 import { ThemeMode } from '../types';
 import { ToolLogosMarquee } from './ToolLogosMarquee';
-import { PERSONAL_INFO } from '../data/portfolioData';
 
 
 interface HeroSectionProps {
@@ -21,12 +19,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoReady, setIsVideoReady] = useState(false);
+  // Play the background video everywhere except when the visitor has asked
+  // for reduced motion or is on a data-saver connection.
   const [shouldPlayVideo] = useState(() => {
     if (typeof window === 'undefined') return false;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-    return window.matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)').matches &&
-      !connection?.saveData &&
-      (navigator.hardwareConcurrency === undefined || navigator.hardwareConcurrency > 2);
+    return window.matchMedia('(prefers-reduced-motion: no-preference)').matches && !connection?.saveData;
   });
 
   // Smooth scroll transform
@@ -71,22 +69,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ theme }) => {
       >
         {/* Futuristic Red Neon Video Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="hero-mobile-atmosphere" aria-hidden="true" />
-          {/* Keep a static poster visible while the video is downloading so
-              the hero never flashes or briefly shows an empty background. */}
-          
+          {/* Animated gradient shows while the video loads (and stays as the
+              background if the video is skipped). No static poster image, so
+              nothing flashes before the video fades in. */}
+          <div className="hero-atmosphere" aria-hidden="true" />
+
           {shouldPlayVideo && (
             <video
               ref={videoRef}
-              src="/Man_standing_with_red_neon_202609031435.mp4"
-              
+              src="/hero-video.mp4"
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              onCanPlay={() => setIsVideoReady(true)}
-              className={`w-full h-full object-cover object-center transition-opacity duration-500 ${isVideoReady ? 'opacity-95' : 'opacity-0'}`}
+              aria-hidden="true"
+              onPlaying={() => setIsVideoReady(true)}
+              className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ${isVideoReady ? 'opacity-95' : 'opacity-0'}`}
             />
           )}
           {/* Subtle Gradient Overlays for Video Clarity and Clean Text Contrast */}

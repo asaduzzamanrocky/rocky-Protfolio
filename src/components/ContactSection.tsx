@@ -59,7 +59,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
   useEffect(() => {
     if (formspreeState.succeeded && !submitted) {
-      AnalyticsService.trackEvent('contact_submit', `Lead: ${formData.name}`, {
+      AnalyticsService.trackEvent('contact_submit', 'Contact form sent', {
         service: formData.service,
       });
 
@@ -67,7 +67,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
         particleCount: 90,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#f97316', '#fb923c', '#ffffff', '#10b981'],
+        colors: ['#00b95a', '#33d17a', '#ffffff', '#0e8f47'],
       });
 
       setSubmitted(true);
@@ -75,7 +75,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ theme }) => {
 
     const formErrors = formspreeState.errors?.getFormErrors();
     if (formErrors?.length) {
-      AnalyticsService.trackEvent('contact_submit', `Lead failed: ${formData.name}`);
+      AnalyticsService.trackEvent('contact_submit', 'Contact form failed');
       setSubmitError(formErrors.map((error) => error.message).join(' '));
     }
   }, [formData.name, formData.service, formspreeState.errors, formspreeState.succeeded, submitted]);

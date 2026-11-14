@@ -33,7 +33,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
   const isLight = theme === 'light-contrast';
 
   const categories = [
-    { id: 'all', label: 'All Projects (60+)', count: PROJECTS.length },
+    { id: 'all', label: 'All Projects', count: PROJECTS.length },
     { id: 'healthcare', label: 'Healthcare & Care Facilities', count: PROJECTS.filter(p => p.category === 'healthcare').length },
     { id: 'corporate', label: 'Corporate & Tech Solutions', count: PROJECTS.filter(p => p.category === 'corporate').length },
     { id: 'ecommerce', label: 'E-Commerce & WooCommerce', count: PROJECTS.filter(p => p.category === 'ecommerce').length },
@@ -115,7 +115,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                 placeholder="Search platforms..."
                 className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs font-mono border focus:outline-none transition-all ${isLight
                   ? 'bg-slate-50 border-slate-300 text-slate-900 focus:border-slate-500'
-                  : 'bg-white/5 border-white/10 text-white placeholder-slate-500 focus:border-orange-500/50 focus:bg-white/[0.07]'
+                  : 'bg-white/5 border-white/10 text-white placeholder-slate-500 focus:border-[#00b95a]/50 focus:bg-white/[0.07]'
                   }`}
               />
               {searchQuery && (
@@ -176,17 +176,17 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   className={`relative rounded-3xl border p-6 sm:p-10 transition-all duration-500 group overflow-hidden ${isLight
                     ? 'bg-slate-50 border-slate-200 hover:border-slate-300 shadow-sm'
-                    : 'bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-black border-white/10 hover:border-orange-500/40 shadow-2xl'
+                    : 'bg-gradient-to-br from-white/[0.03] via-white/[0.01] to-black border-white/10 hover:border-[#00b95a]/40 shadow-2xl'
                     }`}
                 >
-                  <div className="absolute right-4 -top-8 font-display font-black text-8xl sm:text-9xl text-white/[0.03] group-hover:text-orange-500/[0.07] pointer-events-none select-none transition-colors">
+                  <div className="absolute right-4 -top-8 font-display font-black text-8xl sm:text-9xl text-white/[0.03] group-hover:text-[#00b95a]/[0.07] pointer-events-none select-none transition-colors">
                     {numStr}
                   </div>
 
                   <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                     <div className="lg:col-span-8 space-y-4">
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-xs text-orange-500 font-bold tracking-wider">
+                        <span className="font-mono text-xs text-[#00b95a] font-bold tracking-wider">
                           {numStr} // {project.category.toUpperCase()}
                         </span>
 
@@ -198,7 +198,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                         )}
                       </div>
 
-                      <h3 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-orange-400 transition-colors">
+                      <h3 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white group-hover:text-[#33d17a] transition-colors">
                         {project.title}
                       </h3>
 
@@ -218,7 +218,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                       </div>
 
                       <div className="flex items-center gap-2 text-xs font-mono text-slate-400 pt-2">
-                        <Globe className="w-3.5 h-3.5 text-orange-500" />
+                        <Globe className="w-3.5 h-3.5 text-[#00b95a]" />
                         <span className="text-slate-300 font-semibold">{project.domain}</span>
                       </div>
                     </div>
@@ -229,7 +229,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => handleLiveClick(project, e)}
-                        className="px-6 py-3.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-sans text-xs font-bold tracking-wide uppercase flex items-center justify-center gap-2 shadow-lg shadow-orange-500/30 transition-all group-hover:scale-[1.02]"
+                        className="px-6 py-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white font-sans text-xs font-bold tracking-wide uppercase flex items-center justify-center gap-2 shadow-lg shadow-[#00b95a]/30 transition-all group-hover:scale-[1.02]"
                       >
                         <span>Launch Live Website</span>
                         <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -239,7 +239,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                         onClick={() => setActiveModalProject(project)}
                         className="px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-mono text-xs flex items-center justify-center gap-2 transition-all"
                       >
-                        <Layers className="w-3.5 h-3.5 text-orange-400" />
+                        <Layers className="w-3.5 h-3.5 text-[#33d17a]" />
                         <span>Inspect Architecture</span>
                       </button>
                     </div>
@@ -255,7 +255,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
             {totalPages > 1 && (
               <button
                 onClick={handlePrevPage}
-                className="hidden xl:flex absolute -left-7 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
+                className="hidden 2xl:flex absolute -left-20 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
                 title="Scroll Left (Previous 4x2 Set)"
                 id="projects-grid-left-floating-arrow"
               >
@@ -267,7 +267,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
             {totalPages > 1 && (
               <button
                 onClick={handleNextPage}
-                className="hidden xl:flex absolute -right-7 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
+                className="hidden 2xl:flex absolute -right-20 top-1/2 -translate-y-1/2 z-30 p-3.5 rounded-full bg-[#00b95a] hover:bg-[#00984a] text-white border border-white/20 shadow-2xl shadow-[#00b95a]/40 backdrop-blur-xl transition-all hover:scale-110 active:scale-95 group"
                 title="Scroll Right (Next 4x2 Set)"
                 id="projects-grid-right-floating-arrow"
               >
@@ -365,7 +365,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handlePrevPage}
-                    className="px-4 py-2 rounded-full bg-black/60 hover:bg-orange-500 text-white border border-white/15 text-xs font-mono transition-all flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-full bg-black/60 hover:bg-[#00b95a] text-white border border-white/15 text-xs font-mono transition-all flex items-center gap-1.5"
                   >
                     <ChevronLeft className="w-4 h-4" />
                     <span>Previous</span>

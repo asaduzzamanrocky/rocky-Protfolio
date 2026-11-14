@@ -28,7 +28,7 @@ export const Footer: React.FC<FooterProps> = ({ theme }) => {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <img
-                src="/favicon.png"
+                src="/logo.png"
                 alt="Asaduzzaman Rocky logo"
                 width="36"
                 height="36"
@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ theme }) => {
                 <a href="#about" className="hover:text-[#00b95a] transition-colors">02 // About & Philosophy</a>
               </li>
               <li>
-                <a href="#projects" className="hover:text-[#00b95a] transition-colors">03 // 4×2 Platforms (60+)</a>
+                <a href="#projects" className="hover:text-[#00b95a] transition-colors">03 // Selected Work</a>
               </li>
               <li>
                 <a href="#experience" className="hover:text-[#00b95a] transition-colors">04 // Career Timeline</a>

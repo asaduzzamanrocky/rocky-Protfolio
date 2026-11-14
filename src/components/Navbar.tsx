@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Shield,
-  Settings,
   Menu,
   X,
-  Sun,
-  Moon,
-  Laptop,
   PhoneCall
 } from 'lucide-react';
 import { ThemeMode } from '../types';
-import { detectDevice } from '../services/analyticsService';
 
 interface NavbarProps {
   theme: ThemeMode;
@@ -25,14 +19,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userDevice, setUserDevice] = useState<'Mac' | 'iPhone' | 'Windows' | 'Android' | 'Other'>('Mac');
 
   useEffect(() => {
-    setUserDevice(detectDevice());
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -71,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="nav-brand-link"
           >
             <img
-              src="/favicon.png"
+              src="/logo.png"
               alt="Asaduzzaman Rocky logo"
               width="40"
               height="40"
@@ -123,11 +115,10 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {mobileMenuOpen && (
-        <div className="lg:hidden mx-4 mt-3 rounded-3xl border border-white/10 bg-[#1e1e1e]/95 px-4 pt-3 pb-4 text-white shadow-2xl backdrop-blur-2xl">
+        <div className="md:hidden mx-4 mt-3 rounded-3xl border border-white/10 bg-[#1e1e1e]/95 px-4 pt-3 pb-4 text-white shadow-2xl backdrop-blur-2xl">
           <div className="flex items-center justify-between pb-2 border-b border-white/10">
             <div className="flex items-center gap-2">
-              <Laptop className="w-4 h-4 text-[#00b95a]" />
-              <span className="text-xs font-mono text-slate-400">Device: {userDevice} (Optimized)</span>
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400">Menu</span>
             </div>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#00b95a]/15 text-[#00b95a] font-mono">
               60+ Live Sites

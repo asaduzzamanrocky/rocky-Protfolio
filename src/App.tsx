@@ -109,7 +109,6 @@ export default function App() {
               baseSpeed={1.2}
               lineLength={150}
               spawnProbability={0.04}
-              opacity={0.3}
             />
           </div>
 
